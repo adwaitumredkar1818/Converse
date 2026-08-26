@@ -1,0 +1,776 @@
+{
+  "environment": {
+    "GROQ_API_KEY": "PASS",
+    "OPENROUTER_API_KEY": "PASS",
+    "data/processed/tables/analytical_dataset.csv": "PASS",
+    "data/processed/documents/chunks.json": "PASS",
+    "data/processed/documents/embeddings.pkl": "PASS",
+    "vector_db": "PASS",
+    "data/processed/metrics/seasonal_stats.json": "PASS",
+    "data/processed/metrics/consumption_stats.json": "PASS",
+    "data/processed/metrics/weather_stats.json": "PASS",
+    "data/processed/metrics/tariff_stats.json": "PASS",
+    "data/processed/metrics/household_stats.json": "PASS",
+    "data/processed/metrics/acorn_stats.json": "PASS",
+    "data/processed/metrics/holiday_stats.json": "PASS"
+  },
+  "embedding": {
+    "status": "PASS",
+    "dimension": 384,
+    "load_time_ms": 5547.58
+  },
+  "chromadb": {
+    "status": "PASS",
+    "vector_count": 100,
+    "queries": [
+      {
+        "query": "energy conservation methods",
+        "top_cosine": 0.5899,
+        "avg_cosine": 0.5106,
+        "latency_ms": 0.66,
+        "top_chunk_id": "chunk_19",
+        "top_source": "energy.pdf"
+      },
+      {
+        "query": "household demographics",
+        "top_cosine": 0.2769,
+        "avg_cosine": 0.2442,
+        "latency_ms": 0.52,
+        "top_chunk_id": "chunk_56",
+        "top_source": "energy.pdf"
+      },
+      {
+        "query": "temperature effects",
+        "top_cosine": 0.3619,
+        "avg_cosine": 0.3126,
+        "latency_ms": 0.49,
+        "top_chunk_id": "chunk_5",
+        "top_source": "energy.txt"
+      },
+      {
+        "query": "smart meters",
+        "top_cosine": 0.5515,
+        "avg_cosine": 0.3604,
+        "latency_ms": 0.44,
+        "top_chunk_id": "chunk_66",
+        "top_source": "energy.pdf"
+      },
+      {
+        "query": "tariffs",
+        "top_cosine": 0.3006,
+        "avg_cosine": 0.2619,
+        "latency_ms": 0.43,
+        "top_chunk_id": "chunk_21",
+        "top_source": "energy.pdf"
+      }
+    ]
+  },
+  "small_queries": [
+    {
+      "query": "What is the average energy consumption in winter?",
+      "category": "consumption",
+      "answer": "The average daily energy consumption in winter is **approximately\u202f11.99\u202fkWh**\u3010London Seasonal Consumption & Temperature Metrics (Winter) \u2013 avg_daily_energy_kwh: 11.993218648009444\u3011.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.01,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.71,
+        "llm_generation": 701.95,
+        "end_to_end": 702.67
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (seasonal_stats.json, consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 702.7
+    },
+    {
+      "query": "What is the average energy consumption in summer?",
+      "category": "consumption",
+      "answer": "The average daily energy consumption in summer is **approximately\u202f8.16\u202fkWh** per day\u3010London Seasonal Consumption & Temperature Metrics \u2013 Summer\u202f\u2192\u202favg_daily_energy_kwh:\u202f8.16304587818129\u3011.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.03,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.1,
+        "llm_generation": 826.86,
+        "end_to_end": 827.01
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (seasonal_stats.json, consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 827.03
+    },
+    {
+      "query": "How does temperature affect energy consumption?",
+      "category": "hybrid",
+      "answer": "The data show that daily maximum temperature and household energy use are **inversely related**, but only weakly.  \n- The calculated correlation between daily maximum temperature and total energy consumption is **\u20110.1699**\u3010London Weather & Atmospheric Statistics\u3011.  \n\nA negative correlation means that, on average, higher temperatures are associated with slightly lower energy consumption (likely because less heating is needed), while cooler days tend to see a modest increase in usage. However, the magnitude of \u20130.17 indicates that temperature explains only a small portion of the variation in energy demand.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.04,
+        "document_retrieval": 46.09,
+        "tabular_retrieval": 0.06,
+        "llm_generation": 2963.56,
+        "end_to_end": 3009.77
+      },
+      "sources": {
+        "document_chunks_count": 5,
+        "tabular_source": "Precomputed Metrics (weather_stats.json, consumption_stats.json)",
+        "retrieved_chunks": [
+          {
+            "chunk_id": "chunk_53",
+            "content": "resulted in useful work while the remaining 16% was wasted by inefficiencies in electrical generation and transmission. The change \nin energy consumption patterns over time are shown in Figure 1 below. \n \nFigure 1 Estimated Daily Consumption of Energy per Capita at Different Historical Points  \nAdapted from: E. Cook, \"The Flow of Energy in an Industrial Society\" Scientific American, 1971 p. 135.",
+            "similarity_score": 0.5258,
+            "distance": 0.4742,
+            "metadata": {
+              "producer": "Microsoft\u00ae Word 2010",
+              "author": "IEEE",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "title": "Paper Title (use style: paper title)",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "creator": "Microsoft\u00ae Word 2010",
+              "page": 2,
+              "page_label": "3",
+              "source": "data/raw/documents/energy.pdf",
+              "file_type": "pdf",
+              "total_pages": 8,
+              "file_name": "energy.pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_56",
+            "content": "which it converts potential energy into work and heat. Increasing energy consumption closely matches societal modernization. \n Figure 7 shows that during the period  1980 -2002, North America was the greatest consumer of energy in the world. The two \nregions that show the greatest change over that period are Asia and Eastern Europe and the former Soviet Union. While Asia's \nenergy consumption has increased dramatically, that of Eastern Europe and the former Soviet Union has declined",
+            "similarity_score": 0.4852,
+            "distance": 0.5148,
+            "metadata": {
+              "producer": "Microsoft\u00ae Word 2010",
+              "file_type": "pdf",
+              "page_label": "4",
+              "source": "data/raw/documents/energy.pdf",
+              "creator": "Microsoft\u00ae Word 2010",
+              "page": 3,
+              "author": "IEEE",
+              "title": "Paper Title (use style: paper title)",
+              "total_pages": 8,
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "file_name": "energy.pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_57",
+            "content": "Figure 7. Percentage of World Energy Consumption By Region 1980 -2002 \nData obtained from the Energy Information Administration \n  \n \nFigure 8. Percentage of total Energy Consumption By Region in Select Years \nData obtained from the Energy Information Administration \nIII. ENERGY CONSERVATION AND ITS IMPORTANCE  \nEnergy conservation  refers to efforts made to reduce energy consumption. Energy conservation can be achieved through",
+            "similarity_score": 0.4843,
+            "distance": 0.5157,
+            "metadata": {
+              "source": "data/raw/documents/energy.pdf",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "producer": "Microsoft\u00ae Word 2010",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page_label": "4",
+              "page": 3,
+              "title": "Paper Title (use style: paper title)",
+              "creator": "Microsoft\u00ae Word 2010",
+              "file_type": "pdf",
+              "author": "IEEE",
+              "total_pages": 8,
+              "file_name": "energy.pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_59",
+            "content": "costs and promote economic security. Industrial and commercial users can increase energy use efficiency to maximize profit. \nIn passive solar building design, windows, walls, and floors are made to collect, store, and distribute solar energy in the form of \nheat in the winter and reject solar heat in the summer. This is called passive solar design or climatic design because, unlik e \nactive solar heating systems, it doesn't involve the use of mechanical and electrical devices.",
+            "similarity_score": 0.4776,
+            "distance": 0.5224,
+            "metadata": {
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "producer": "Microsoft\u00ae Word 2010",
+              "title": "Paper Title (use style: paper title)",
+              "file_name": "energy.pdf",
+              "page": 3,
+              "total_pages": 8,
+              "page_label": "4",
+              "creator": "Microsoft\u00ae Word 2010",
+              "source": "data/raw/documents/energy.pdf",
+              "author": "IEEE",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "file_type": "pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_20",
+            "content": "can be achieved through increased efficient energy use, in conjunction with decreased energy consumption and/or reduced \nconsumption from conventional energy sources. Energy conservation can result in increased  financial \ncapital, environmental quality, national security , personal security , and  human comfort . Individuals and organizations \nthat are direct consumers of energy choose to conserve energy to reduce energy costs and promote  economic security .",
+            "similarity_score": 0.4759,
+            "distance": 0.5241,
+            "metadata": {
+              "creator": "Microsoft\u00ae Word 2010",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "author": "IEEE",
+              "source": "data/raw/documents/energy.pdf",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "total_pages": 8,
+              "file_type": "pdf",
+              "title": "Paper Title (use style: paper title)",
+              "page": 0,
+              "producer": "Microsoft\u00ae Word 2010",
+              "file_name": "energy.pdf",
+              "page_label": "1"
+            }
+          }
+        ]
+      },
+      "actual_latency_ms": 3009.79
+    },
+    {
+      "query": "Which season has the highest consumption?",
+      "category": "consumption",
+      "answer": "Winter has the highest average daily energy consumption, with an average of\u202f11.99\u202fkWh per day\u202f\u3010London Seasonal Consumption & Temperature Metrics (Winter) \u2013 avg_daily_energy_kwh: 11.993218648009444\u3011.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.05,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.17,
+        "llm_generation": 943.83,
+        "end_to_end": 944.05
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (seasonal_stats.json, consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 944.07
+    },
+    {
+      "query": "What is the temperature-energy correlation?",
+      "category": "weather",
+      "answer": "The temperature\u2011energy correlation in the London dataset is **\u20110.16989304196487576**\u3010London Weather & Atmospheric Statistics\u3011. This indicates a weak negative relationship between daily maximum temperature and household energy consumption.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.05,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.12,
+        "llm_generation": 742.07,
+        "end_to_end": 742.24
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (weather_stats.json, consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 742.25
+    }
+  ],
+  "large_queries": [
+    {
+      "query": "Using the available London energy data, explain the relationship between temperature and household energy consumption, identify which season has the highest and lowest average daily consumption, compare the available tariff consumption values, and explain whether the provided data gives enough evidence to conclude that household characteristics influence energy usage.",
+      "category": "hybrid",
+      "answer": "Based on the provided London energy data, we can analyze the relationship between temperature and household energy consumption, identify the seasons with the highest and lowest average daily consumption, compare the available tariff consumption values, and assess whether the data provides enough evidence to conclude that household characteristics influence energy usage.\n\n1. **Relationship between temperature and household energy consumption**: The London Weather & Atmospheric Statistics section provides a correlation coefficient (`temp_energy_correlation`) of -0.16989304196487576 between daily maximum temperature and energy consumption. This suggests a weak negative correlation, indicating that as temperature increases, energy consumption tends to decrease (Source: London Weather & Atmospheric Statistics). This is consistent with the expectation that households tend to consume more energy for heating during colder periods and less energy during warmer periods.\n\n2. **Seasonal consumption**: The London Seasonal Consumption & Temperature Metrics section provides average daily energy consumption values for each season. The highest average daily consumption is observed in **Winter** with 11.993218648009444 kWh, while the lowest average daily consumption is observed in **Summer** with 8.16304587818129 kWh (Source: London Seasonal Consumption & Temperature Metrics).\n\n3. **Tariff consumption comparison**: The London Tariff Performance section provides a comparison of the Standard (Std) and Time-of-Use (ToU) tariffs. The average daily energy consumption for Std is 10.284679831582043 kWh, while for ToU it is 9.501246438863857 kWh (Source: London Tariff Performance). This suggests that households on the ToU tariff tend to consume slightly less energy on average compared to those on the Std tariff.\n\n4. **Household characteristics and energy usage**: The London Household & Demographic Statistics section provides information on household characteristics, such as ACORN groups and tariff distribution. However, there is no direct analysis or correlation provided between these characteristics and energy usage (Source: London Household & Demographic Statistics). While the data provides some insights into household demographics, it does not provide enough evidence to conclude that household characteristics significantly influence energy usage. Further analysis would be required to investigate this relationship.\n\nIn summary, the provided data suggests a weak negative correlation between temperature and energy consumption, with the highest average daily consumption in Winter and the lowest in Summer. The ToU tariff tends to have slightly lower average daily consumption compared to the Std tariff. However, the data does not provide sufficient evidence to conclude that household characteristics influence energy usage.",
+      "provider": "OpenRouter (Fallback)",
+      "model": "meta-llama/llama-3.3-70b-instruct",
+      "latencies_ms": {
+        "router": 0.04,
+        "document_retrieval": 47.47,
+        "tabular_retrieval": 0.12,
+        "llm_generation": 8449.15,
+        "end_to_end": 8496.79
+      },
+      "sources": {
+        "document_chunks_count": 5,
+        "tabular_source": "Precomputed Metrics (household_stats.json, tariff_stats.json, weather_stats.json, seasonal_stats.json, consumption_stats.json)",
+        "retrieved_chunks": [
+          {
+            "chunk_id": "chunk_57",
+            "content": "Figure 7. Percentage of World Energy Consumption By Region 1980 -2002 \nData obtained from the Energy Information Administration \n  \n \nFigure 8. Percentage of total Energy Consumption By Region in Select Years \nData obtained from the Energy Information Administration \nIII. ENERGY CONSERVATION AND ITS IMPORTANCE  \nEnergy conservation  refers to efforts made to reduce energy consumption. Energy conservation can be achieved through",
+            "similarity_score": 0.5889,
+            "distance": 0.4111,
+            "metadata": {
+              "file_type": "pdf",
+              "file_name": "energy.pdf",
+              "creator": "Microsoft\u00ae Word 2010",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "total_pages": 8,
+              "producer": "Microsoft\u00ae Word 2010",
+              "title": "Paper Title (use style: paper title)",
+              "page_label": "4",
+              "source": "data/raw/documents/energy.pdf",
+              "author": "IEEE",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page": 3
+            }
+          },
+          {
+            "chunk_id": "chunk_53",
+            "content": "resulted in useful work while the remaining 16% was wasted by inefficiencies in electrical generation and transmission. The change \nin energy consumption patterns over time are shown in Figure 1 below. \n \nFigure 1 Estimated Daily Consumption of Energy per Capita at Different Historical Points  \nAdapted from: E. Cook, \"The Flow of Energy in an Industrial Society\" Scientific American, 1971 p. 135.",
+            "similarity_score": 0.5351,
+            "distance": 0.4649,
+            "metadata": {
+              "page_label": "3",
+              "author": "IEEE",
+              "producer": "Microsoft\u00ae Word 2010",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page": 2,
+              "title": "Paper Title (use style: paper title)",
+              "total_pages": 8,
+              "file_name": "energy.pdf",
+              "creator": "Microsoft\u00ae Word 2010",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "source": "data/raw/documents/energy.pdf",
+              "file_type": "pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_56",
+            "content": "which it converts potential energy into work and heat. Increasing energy consumption closely matches societal modernization. \n Figure 7 shows that during the period  1980 -2002, North America was the greatest consumer of energy in the world. The two \nregions that show the greatest change over that period are Asia and Eastern Europe and the former Soviet Union. While Asia's \nenergy consumption has increased dramatically, that of Eastern Europe and the former Soviet Union has declined",
+            "similarity_score": 0.5041,
+            "distance": 0.4959,
+            "metadata": {
+              "title": "Paper Title (use style: paper title)",
+              "total_pages": 8,
+              "author": "IEEE",
+              "page_label": "4",
+              "file_type": "pdf",
+              "file_name": "energy.pdf",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "creator": "Microsoft\u00ae Word 2010",
+              "producer": "Microsoft\u00ae Word 2010",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "source": "data/raw/documents/energy.pdf",
+              "page": 3
+            }
+          },
+          {
+            "chunk_id": "chunk_67",
+            "content": "examples of such solutions. \nIt is frequently argued that effective energy conservation requires  more than informing consumers about energy consumption, \nfor example through smart meters at home or  ecolabels while shopping. People need practical and tailored advice how to reduce \nenergy consumption in order to make change easy and lasting.  This applies to both efficiency investments, such as investment in",
+            "similarity_score": 0.5016,
+            "distance": 0.4984,
+            "metadata": {
+              "author": "IEEE",
+              "title": "Paper Title (use style: paper title)",
+              "page_label": "5",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "producer": "Microsoft\u00ae Word 2010",
+              "source": "data/raw/documents/energy.pdf",
+              "total_pages": 8,
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "file_name": "energy.pdf",
+              "file_type": "pdf",
+              "creator": "Microsoft\u00ae Word 2010",
+              "page": 4
+            }
+          },
+          {
+            "chunk_id": "chunk_54",
+            "content": "If you look at how energy sources have changed over time, you will notice that the age of industrialization and to an even gr eater \nextent the age of technology have accelerated the appearances and exploitation of new energy sources. \n \nWorld-wide Energy Consumption",
+            "similarity_score": 0.4605,
+            "distance": 0.5395,
+            "metadata": {
+              "page_label": "3",
+              "source": "data/raw/documents/energy.pdf",
+              "title": "Paper Title (use style: paper title)",
+              "total_pages": 8,
+              "producer": "Microsoft\u00ae Word 2010",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "creator": "Microsoft\u00ae Word 2010",
+              "file_name": "energy.pdf",
+              "file_type": "pdf",
+              "author": "IEEE",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page": 2
+            }
+          }
+        ]
+      },
+      "actual_latency_ms": 8496.81
+    },
+    {
+      "query": "Analyze the available London energy dataset and explain how seasonal consumption differs between winter, spring, summer, and autumn. Include the temperature-energy correlation, compare Standard and ToU tariff consumption, and mention any household ACORN information available in the dataset. Clearly distinguish between facts directly supported by the data and conclusions that cannot be established from the available evidence.",
+      "category": "hybrid",
+      "answer": "Analyzing the London energy dataset, we can observe the following facts about seasonal consumption:\n\n1. **Seasonal Consumption**: The dataset provides average daily energy consumption for each season: \n   - Winter: 11.993218648009444 kWh\n   - Spring: 10.206178342973692 kWh\n   - Summer: 8.16304587818129 kWh\n   - Autumn: 9.974053077188522 kWh\n   (Source: London Seasonal Consumption & Temperature Metrics)\n\n2. **Temperature-Energy Correlation**: The temperature-energy correlation is -0.16989304196487576, indicating a negative correlation between daily maximum temperature and energy consumption.\n   (Source: London Weather & Atmospheric Statistics)\n\n3. **Standard and ToU Tariff Consumption**: The dataset provides average daily energy consumption for Standard and ToU tariffs:\n   - Standard: 10.284679831582043 kWh\n   - ToU: 9.501246438863857 kWh\n   (Source: London Tariff Performance)\n\n4. **Household ACORN Information**: The dataset provides information about household demographics, including ACORN groups. For example, the average daily energy consumption varies across different ACORN groups:\n   - ACORN-A: 19.07018910630998 kWh\n   - ACORN-B: 11.909066997902437 kWh\n   - ACORN-C: 11.954172500620217 kWh\n   (Source: London ACORN Demographic Group Breakdown)\n\nFrom these facts, we can conclude that:\n\n- Energy consumption is highest in winter and lowest in summer, which is consistent with the typical heating and cooling patterns in the UK.\n- The negative temperature-energy correlation suggests that higher temperatures are associated with lower energy consumption, which could be due to reduced heating demand.\n- The difference in average daily energy consumption between Standard and ToU tariffs may indicate that ToU tariffs are more effective in reducing energy consumption.\n\nHowever, we cannot establish the following conclusions from the available evidence:\n\n- The causal relationship between temperature and energy consumption, as the correlation does not necessarily imply causation.\n- The effectiveness of ToU tariffs in reducing energy consumption, as the difference in average daily energy consumption between Standard and ToU tariffs may be influenced by other factors, such as household demographics or behavior.\n- The impact of ACORN groups on energy consumption, as the dataset only provides average daily energy consumption for each ACORN group, without controlling for other factors that may influence energy consumption.\n\nIn summary, while the dataset provides valuable insights into seasonal consumption patterns, temperature-energy correlation, and tariff performance, it is essential to distinguish between facts directly supported by the data and conclusions that require additional evidence or analysis.",
+      "provider": "OpenRouter (Fallback)",
+      "model": "meta-llama/llama-3.3-70b-instruct",
+      "latencies_ms": {
+        "router": 0.03,
+        "document_retrieval": 43.86,
+        "tabular_retrieval": 0.14,
+        "llm_generation": 32612.76,
+        "end_to_end": 32656.81
+      },
+      "sources": {
+        "document_chunks_count": 5,
+        "tabular_source": "Precomputed Metrics (household_stats.json, tariff_stats.json, acorn_stats.json, weather_stats.json, seasonal_stats.json, consumption_stats.json)",
+        "retrieved_chunks": [
+          {
+            "chunk_id": "chunk_57",
+            "content": "Figure 7. Percentage of World Energy Consumption By Region 1980 -2002 \nData obtained from the Energy Information Administration \n  \n \nFigure 8. Percentage of total Energy Consumption By Region in Select Years \nData obtained from the Energy Information Administration \nIII. ENERGY CONSERVATION AND ITS IMPORTANCE  \nEnergy conservation  refers to efforts made to reduce energy consumption. Energy conservation can be achieved through",
+            "similarity_score": 0.524,
+            "distance": 0.476,
+            "metadata": {
+              "title": "Paper Title (use style: paper title)",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "file_type": "pdf",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "creator": "Microsoft\u00ae Word 2010",
+              "total_pages": 8,
+              "page_label": "4",
+              "page": 3,
+              "producer": "Microsoft\u00ae Word 2010",
+              "author": "IEEE",
+              "file_name": "energy.pdf",
+              "source": "data/raw/documents/energy.pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_53",
+            "content": "resulted in useful work while the remaining 16% was wasted by inefficiencies in electrical generation and transmission. The change \nin energy consumption patterns over time are shown in Figure 1 below. \n \nFigure 1 Estimated Daily Consumption of Energy per Capita at Different Historical Points  \nAdapted from: E. Cook, \"The Flow of Energy in an Industrial Society\" Scientific American, 1971 p. 135.",
+            "similarity_score": 0.5002,
+            "distance": 0.4998,
+            "metadata": {
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "page_label": "3",
+              "total_pages": 8,
+              "creator": "Microsoft\u00ae Word 2010",
+              "source": "data/raw/documents/energy.pdf",
+              "title": "Paper Title (use style: paper title)",
+              "author": "IEEE",
+              "file_name": "energy.pdf",
+              "file_type": "pdf",
+              "page": 2,
+              "producer": "Microsoft\u00ae Word 2010"
+            }
+          },
+          {
+            "chunk_id": "chunk_56",
+            "content": "which it converts potential energy into work and heat. Increasing energy consumption closely matches societal modernization. \n Figure 7 shows that during the period  1980 -2002, North America was the greatest consumer of energy in the world. The two \nregions that show the greatest change over that period are Asia and Eastern Europe and the former Soviet Union. While Asia's \nenergy consumption has increased dramatically, that of Eastern Europe and the former Soviet Union has declined",
+            "similarity_score": 0.4823,
+            "distance": 0.5177,
+            "metadata": {
+              "producer": "Microsoft\u00ae Word 2010",
+              "title": "Paper Title (use style: paper title)",
+              "file_name": "energy.pdf",
+              "page_label": "4",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "source": "data/raw/documents/energy.pdf",
+              "total_pages": 8,
+              "creator": "Microsoft\u00ae Word 2010",
+              "page": 3,
+              "author": "IEEE",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "file_type": "pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_65",
+            "content": "energy often is too t ime consuming and costly when there are cheaper products and technology available using today's fossil \nfuels.[8] Some governments and NGOs are attempting to reduce this compl exity with ecolabels that make differences in energy \nefficiency easy to research while shopping. \nTechnology needs to be able to change behavioral patterns, it can do this by allowing energ y users, business and residential, to",
+            "similarity_score": 0.4344,
+            "distance": 0.5656,
+            "metadata": {
+              "creator": "Microsoft\u00ae Word 2010",
+              "page_label": "5",
+              "total_pages": 8,
+              "file_type": "pdf",
+              "file_name": "energy.pdf",
+              "title": "Paper Title (use style: paper title)",
+              "source": "data/raw/documents/energy.pdf",
+              "producer": "Microsoft\u00ae Word 2010",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page": 4,
+              "author": "IEEE"
+            }
+          },
+          {
+            "chunk_id": "chunk_67",
+            "content": "examples of such solutions. \nIt is frequently argued that effective energy conservation requires  more than informing consumers about energy consumption, \nfor example through smart meters at home or  ecolabels while shopping. People need practical and tailored advice how to reduce \nenergy consumption in order to make change easy and lasting.  This applies to both efficiency investments, such as investment in",
+            "similarity_score": 0.4341,
+            "distance": 0.5659,
+            "metadata": {
+              "total_pages": 8,
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "creator": "Microsoft\u00ae Word 2010",
+              "page": 4,
+              "file_type": "pdf",
+              "source": "data/raw/documents/energy.pdf",
+              "author": "IEEE",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "title": "Paper Title (use style: paper title)",
+              "producer": "Microsoft\u00ae Word 2010",
+              "file_name": "energy.pdf",
+              "page_label": "5"
+            }
+          }
+        ]
+      },
+      "actual_latency_ms": 32656.83
+    },
+    {
+      "query": "Based only on the available data and documents, provide a comprehensive analysis of London's household energy consumption patterns, including seasonal trends, temperature relationship, tariff differences, household characteristics, and supporting document evidence. Do not introduce external facts or predictions.",
+      "category": "hybrid",
+      "answer": "**London Household Energy Consumption \u2013 Evidence\u2011Based Overview**\n\n| Aspect | Key Findings (from the London Smart\u2011Meter dataset) | Supporting Evidence |\n|--------|----------------------------------------------------|----------------------|\n| **Overall daily use** | \u2022 Mean daily consumption per household = **10.18\u202fkWh**.<br>\u2022 Median = **7.82\u202fkWh**.<br>\u2022 Wide spread (std\u202f\u2248\u202f9.13\u202fkWh) with a minimum of **0\u202fkWh** and a maximum of **332.56\u202fkWh** on a single day. | City\u2011wide metrics table \u2013 \u201cmean_daily_per_household_kwh\u201d, \u201cdaily_median_kwh\u201d, \u201cdaily_std_kwh\u201d, \u201cdaily_min_kwh\u201d, \u201cdaily_max_kwh\u201d\u3010tabular\u3011 |\n| **Seasonal trends** | \u2022 **Winter**: highest average daily use \u2013 **11.99\u202fkWh** (\u2248\u202f20\u202f% above the overall mean).<br>\u2022 **Spring**: average **10.21\u202fkWh** (close to the overall mean).<br>\u2022 **Summer**: lowest average \u2013 **8.16\u202fkWh** (\u2248\u202f20\u202f% below the overall mean).<br>\u2022 **Autumn**: average **9.97\u202fkWh** (slightly below the overall mean). | Seasonal metrics table \u2013 \u201cWinter\u201d, \u201cSpring\u201d, \u201cSummer\u201d, \u201cAutumn\u201d average daily energy values\u3010tabular\u3011 |\n| **Temperature relationship** | \u2022 Correlation between daily maximum temperature and energy consumption = **\u20110.17** (weak negative).<br>\u2022 As temperatures rise (e.g., summer max\u202f\u2248\u202f21.6\u202f\u00b0C), consumption falls; as temperatures drop (winter max\u202f\u2248\u202f8.2\u202f\u00b0C), consumption rises. | Weather\u2011energy correlation value \u201ctemp_energy_correlation\u201d = \u20130.16989304196487576\u3010tabular\u3011 |\n| **Tariff performance (Standard vs. Time\u2011of\u2011Use)** | \u2022 **Standard (Std)** tariff: average daily use **10.28\u202fkWh**, median **7.90\u202fkWh**, max **332.56\u202fkWh**.<br>\u2022 **Time\u2011of\u2011Use (ToU)** tariff: average daily use **9.50\u202fkWh**, median **7.50\u202fkWh**, max **176.02\u202fkWh**.<br>\u2022 Std households consume slightly more on average and exhibit a higher maximum, suggesting that the ToU pricing may encourage modest reductions in peak demand. | London Tariff Performance table \u2013 \u201cStd\u201d vs \u201cToU\u201d metrics\u3010tabular\u3011 |\n| **Household characteristics** | \u2022 Total households in the sample: **5,566**.<br>\u2022 Tariff distribution: **4,443 Std** (\u2248\u202f80\u202f%) and **1,123 ToU** (\u2248\u202f20\u202f%).<br>\u2022 Socio\u2011economic (ACORN) breakdown shows a large share in the **Affluent (2,192)** and **Adversity (1,816)** groups, with representation across all ACORN categories.<br>\u2022 Mean daily per\u2011household consumption (10.18\u202fkWh) aligns closely with the overall city mean (10.13\u202fkWh).<br>\u2022 The five households with the highest average daily consumption range from **70.97\u202fkWh** to **101.09\u202fkWh**, far above the city median, indicating a small tail of heavy users. | Household & demographic statistics (total_households, tariff_distribution, acorn_grouped_distribution, household_daily_energy_summary)\u3010tabular\u3011; Top\u20115 highest\u2011consuming households list\u3010tabular\u3011 |\n| **Behavioural & technological context** | \u2022 The documents stress that **energy\u2011conservation efforts need more than information**; practical, real\u2011time feedback (e.g., smart meters) is highlighted as a way to make savings \u201ceasy and lasting\u201d.<br>\u2022 Examples of real\u2011time metering solutions (Energy Detective, Eniscope, Ecowizard, Paladin Live) illustrate",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.04,
+        "document_retrieval": 52.29,
+        "tabular_retrieval": 0.11,
+        "llm_generation": 3565.23,
+        "end_to_end": 3617.69
+      },
+      "sources": {
+        "document_chunks_count": 5,
+        "tabular_source": "Precomputed Metrics (household_stats.json, tariff_stats.json, weather_stats.json, seasonal_stats.json, consumption_stats.json)",
+        "retrieved_chunks": [
+          {
+            "chunk_id": "chunk_53",
+            "content": "resulted in useful work while the remaining 16% was wasted by inefficiencies in electrical generation and transmission. The change \nin energy consumption patterns over time are shown in Figure 1 below. \n \nFigure 1 Estimated Daily Consumption of Energy per Capita at Different Historical Points  \nAdapted from: E. Cook, \"The Flow of Energy in an Industrial Society\" Scientific American, 1971 p. 135.",
+            "similarity_score": 0.5374,
+            "distance": 0.4626,
+            "metadata": {
+              "total_pages": 8,
+              "producer": "Microsoft\u00ae Word 2010",
+              "title": "Paper Title (use style: paper title)",
+              "source": "data/raw/documents/energy.pdf",
+              "page": 2,
+              "file_name": "energy.pdf",
+              "file_type": "pdf",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "page_label": "3",
+              "creator": "Microsoft\u00ae Word 2010",
+              "author": "IEEE",
+              "moddate": "2014-10-13T11:42:16+05:30"
+            }
+          },
+          {
+            "chunk_id": "chunk_57",
+            "content": "Figure 7. Percentage of World Energy Consumption By Region 1980 -2002 \nData obtained from the Energy Information Administration \n  \n \nFigure 8. Percentage of total Energy Consumption By Region in Select Years \nData obtained from the Energy Information Administration \nIII. ENERGY CONSERVATION AND ITS IMPORTANCE  \nEnergy conservation  refers to efforts made to reduce energy consumption. Energy conservation can be achieved through",
+            "similarity_score": 0.5362,
+            "distance": 0.4638,
+            "metadata": {
+              "file_name": "energy.pdf",
+              "producer": "Microsoft\u00ae Word 2010",
+              "page_label": "4",
+              "title": "Paper Title (use style: paper title)",
+              "creator": "Microsoft\u00ae Word 2010",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page": 3,
+              "author": "IEEE",
+              "total_pages": 8,
+              "file_type": "pdf",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "source": "data/raw/documents/energy.pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_67",
+            "content": "examples of such solutions. \nIt is frequently argued that effective energy conservation requires  more than informing consumers about energy consumption, \nfor example through smart meters at home or  ecolabels while shopping. People need practical and tailored advice how to reduce \nenergy consumption in order to make change easy and lasting.  This applies to both efficiency investments, such as investment in",
+            "similarity_score": 0.5221,
+            "distance": 0.4779,
+            "metadata": {
+              "file_name": "energy.pdf",
+              "page": 4,
+              "producer": "Microsoft\u00ae Word 2010",
+              "author": "IEEE",
+              "creator": "Microsoft\u00ae Word 2010",
+              "file_type": "pdf",
+              "title": "Paper Title (use style: paper title)",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page_label": "5",
+              "total_pages": 8,
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "source": "data/raw/documents/energy.pdf"
+            }
+          },
+          {
+            "chunk_id": "chunk_65",
+            "content": "energy often is too t ime consuming and costly when there are cheaper products and technology available using today's fossil \nfuels.[8] Some governments and NGOs are attempting to reduce this compl exity with ecolabels that make differences in energy \nefficiency easy to research while shopping. \nTechnology needs to be able to change behavioral patterns, it can do this by allowing energ y users, business and residential, to",
+            "similarity_score": 0.4713,
+            "distance": 0.5287,
+            "metadata": {
+              "author": "IEEE",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "file_type": "pdf",
+              "page_label": "5",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "page": 4,
+              "producer": "Microsoft\u00ae Word 2010",
+              "file_name": "energy.pdf",
+              "source": "data/raw/documents/energy.pdf",
+              "title": "Paper Title (use style: paper title)",
+              "total_pages": 8,
+              "creator": "Microsoft\u00ae Word 2010"
+            }
+          },
+          {
+            "chunk_id": "chunk_66",
+            "content": "see graphically the impact their energy use can have in their workplace or homes. Advanced real -time energy metering is able to \nhelp people save energy by their actions. Rather than become wasteful automatic energy sav ing technologies, real -time energy \nmonitors and meters such as the Energy Detective, Enigin Plc's Eniscope, Ecowizard, or solutions like EDSA'a Paladin Live are  \nexamples of such solutions.",
+            "similarity_score": 0.4541,
+            "distance": 0.5459,
+            "metadata": {
+              "creator": "Microsoft\u00ae Word 2010",
+              "title": "Paper Title (use style: paper title)",
+              "total_pages": 8,
+              "file_name": "energy.pdf",
+              "file_type": "pdf",
+              "producer": "Microsoft\u00ae Word 2010",
+              "page_label": "5",
+              "author": "IEEE",
+              "creationdate": "2014-10-13T11:42:16+05:30",
+              "moddate": "2014-10-13T11:42:16+05:30",
+              "page": 4,
+              "source": "data/raw/documents/energy.pdf"
+            }
+          }
+        ]
+      },
+      "actual_latency_ms": 3617.71
+    }
+  ],
+  "anti_hallucination": [
+    {
+      "query": "What will London's electricity consumption be tomorrow?",
+      "category": "consumption",
+      "answer": "I don't have enough information in the available data. \u3010London Citywide Consumption Metrics & Percentiles\u3011",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.04,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.09,
+        "llm_generation": 590.36,
+        "end_to_end": 590.49
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 590.51
+    },
+    {
+      "query": "What is the electricity price per kWh tomorrow?",
+      "category": "consumption",
+      "answer": "I don't have enough information in the available data.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.04,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.11,
+        "llm_generation": 704.21,
+        "end_to_end": 704.38
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 704.39
+    },
+    {
+      "query": "How much energy will each household consume next year?",
+      "category": "household",
+      "answer": "I don't have enough information in the available data.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.04,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.12,
+        "llm_generation": 1260.22,
+        "end_to_end": 1260.39
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (household_stats.json, consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 1260.4
+    },
+    {
+      "query": "What will the weather be in London next month?",
+      "category": "weather",
+      "answer": "I don't have enough information in the available data.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.05,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.15,
+        "llm_generation": 534.47,
+        "end_to_end": 534.68
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (weather_stats.json, seasonal_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 534.69
+    },
+    {
+      "query": "Who will have the highest electricity consumption tomorrow?",
+      "category": "consumption",
+      "answer": "I don't have enough information in the available data.",
+      "provider": "Groq",
+      "model": "openai/gpt-oss-120b",
+      "latencies_ms": {
+        "router": 0.04,
+        "document_retrieval": 0.0,
+        "tabular_retrieval": 0.09,
+        "llm_generation": 677.24,
+        "end_to_end": 677.37
+      },
+      "sources": {
+        "document_chunks_count": 0,
+        "tabular_source": "Precomputed Metrics (consumption_stats.json)",
+        "retrieved_chunks": []
+      },
+      "actual_latency_ms": 677.38
+    }
+  ],
+  "router": [
+    {
+      "query": "How can households reduce energy conservation methods?",
+      "expected": "document",
+      "actual": "hybrid",
+      "pass": false
+    },
+    {
+      "query": "What is the average temperature?",
+      "expected": "weather",
+      "actual": "weather",
+      "pass": true
+    },
+    {
+      "query": "How many households are in the dataset?",
+      "expected": "household",
+      "actual": "household",
+      "pass": true
+    },
+    {
+      "query": "What is the average winter consumption?",
+      "expected": "consumption",
+      "actual": "consumption",
+      "pass": true
+    },
+    {
+      "query": "How does temperature affect winter energy consumption?",
+      "expected": "hybrid",
+      "actual": "hybrid",
+      "pass": true
+    }
+  ],
+  "tabular": {
+    "consumption": {
+      "status": "PASS",
+      "latency_ms": 0.08
+    }
+  }
+}

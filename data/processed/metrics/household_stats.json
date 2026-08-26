@@ -1,0 +1,40 @@
+{
+  "total_households": 5566,
+  "tariff_distribution": {
+    "Std": 4443,
+    "ToU": 1123
+  },
+  "acorn_grouped_distribution": {
+    "ACORN-": 2,
+    "ACORN-U": 49,
+    "Adversity": 1816,
+    "Affluent": 2192,
+    "Comfortable": 1507
+  },
+  "acorn_detail_distribution": {
+    "ACORN-": 2,
+    "ACORN-A": 157,
+    "ACORN-B": 25,
+    "ACORN-C": 151,
+    "ACORN-D": 292,
+    "ACORN-E": 1567,
+    "ACORN-F": 684,
+    "ACORN-G": 205,
+    "ACORN-H": 455,
+    "ACORN-I": 51,
+    "ACORN-J": 112,
+    "ACORN-K": 165,
+    "ACORN-L": 342,
+    "ACORN-M": 113,
+    "ACORN-N": 152,
+    "ACORN-O": 103,
+    "ACORN-P": 110,
+    "ACORN-Q": 831,
+    "ACORN-U": 49
+  },
+  "household_daily_energy_summary": {
+    "mean_daily_per_household_kwh": 10.178333034173315,
+    "max_daily_per_household_kwh": 332.5560009999998,
+    "min_daily_per_household_kwh": 0.0
+  }
+}

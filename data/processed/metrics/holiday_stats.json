@@ -1,0 +1,73 @@
+{
+  "bank_holiday_vs_regular": {
+    "bank_holiday": {
+      "mean": 10.41262280781595,
+      "median": 7.826499950000002,
+      "std": 9.677560036650284,
+      "count": 80630
+    },
+    "regular_day": {
+      "mean": 10.120420403379466,
+      "median": 7.816,
+      "std": 9.119728169844786,
+      "count": 3436372
+    }
+  },
+  "specific_holidays": {
+    "Boxing Day": {
+      "mean": 11.664537584928409,
+      "median": 8.549999999999999,
+      "count": 10616
+    },
+    "Christmas Day": {
+      "mean": 12.525429081983424,
+      "median": 8.664500050000001,
+      "count": 10618
+    },
+    "Early May bank holiday": {
+      "mean": 8.046174827172456,
+      "median": 6.612000000000001,
+      "count": 9701
+    },
+    "Easter Monday": {
+      "mean": 9.990090696516154,
+      "median": 7.8285,
+      "count": 10276
+    },
+    "Good Friday": {
+      "mean": 10.843437364024924,
+      "median": 8.151500000000002,
+      "count": 9148
+    },
+    "New Year?s Day": {
+      "mean": 12.061840935092349,
+      "median": 9.322,
+      "count": 10612
+    },
+    "New Year?s Day (substitute day)": {
+      "mean": 13.814964403220339,
+      "median": 10.1025,
+      "count": 590
+    },
+    "Queen?s Diamond Jubilee (extra bank holiday)": {
+      "mean": 10.6318134,
+      "median": 8.2015,
+      "count": 2358
+    },
+    "Spring bank holiday": {
+      "mean": 8.556658454031355,
+      "median": 6.995999999999999,
+      "count": 5358
+    },
+    "Spring bank holiday (substitute day)": {
+      "mean": 10.556476904694486,
+      "median": 7.922499999999999,
+      "count": 1342
+    },
+    "Summer bank holiday": {
+      "mean": 8.151023074328238,
+      "median": 6.723,
+      "count": 10011
+    }
+  }
+}

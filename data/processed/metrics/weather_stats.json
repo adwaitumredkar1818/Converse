@@ -1,0 +1,31 @@
+{
+  "total_weather_days": 829,
+  "temperature_celsius": {
+    "mean_max_temp": 13.690955259975816,
+    "mean_min_temp": 7.467775090689238,
+    "highest_recorded_temp": 32.4,
+    "lowest_recorded_temp": -5.64
+  },
+  "atmospheric": {
+    "mean_humidity": 0.7806529625151148,
+    "mean_wind_speed": 3.6084885126964936
+  },
+  "summary_counts": {
+    "Mostly cloudy throughout the day.": 167,
+    "Partly cloudy throughout the day.": 167,
+    "Partly cloudy until evening.": 129,
+    "Mostly cloudy until evening.": 111,
+    "Foggy in the morning.": 36,
+    "Partly cloudy starting in the afternoon, continuing until evening.": 16,
+    "Partly cloudy until afternoon.": 15,
+    "Foggy overnight.": 14,
+    "Mostly cloudy throughout the day and breezy overnight.": 7,
+    "Mostly cloudy until evening and breezy starting in the evening.": 7
+  },
+  "precip_type_counts": {
+    "rain": 807,
+    "snow": 20,
+    "NaN": 2
+  },
+  "temp_energy_correlation": -0.16989304196487576
+}

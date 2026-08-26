@@ -1,0 +1,16 @@
+{
+  "Std": {
+    "avg_daily_energy_kwh": 10.284679831582043,
+    "median_daily_energy_kwh": 7.903000100000001,
+    "std_daily_energy_kwh": 9.372712329183896,
+    "max_daily_energy_kwh": 332.5560009999998,
+    "total_records": 2809679
+  },
+  "ToU": {
+    "avg_daily_energy_kwh": 9.501246438863857,
+    "median_daily_energy_kwh": 7.501999999999999,
+    "std_daily_energy_kwh": 8.080868384049312,
+    "max_daily_energy_kwh": 176.0239997,
+    "total_records": 707323
+  }
+}

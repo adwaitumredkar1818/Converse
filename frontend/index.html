@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>VoltIQ Energy Intelligence RAG</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..700,0..1&display=swap" rel="stylesheet">
+    <!-- Marked for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "paper": "#f9f7f1",
+                        "paper-line": "#e0e8e4",
+                        "ink-dark": "#2d2926",
+                        "ink-light": "#7a7d7c",
+                        "user-bubble": "#e8b0b0",
+                        "ai-bubble": "#f1e5d1"
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "system-ui", "sans-serif"],
+                        "display": ["Outfit", "system-ui", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f9f7f1;
+            background-image: 
+                linear-gradient(90deg, transparent 78px, #e8b0b0 78px, #e8b0b0 80px, transparent 80px),
+                linear-gradient(transparent 27px, #e0e8e4 27px, #e0e8e4 28px, transparent 28px);
+            background-size: 100% 28px;
+            color: #2d2926;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .header-title { font-family: 'Outfit', sans-serif; }
+        
+        /* Markdown Overrides */
+        .prose pre {
+            background-color: white !important;
+            border: 1px solid #e0e8e4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .prose code { color: #2d2926; font-family: monospace; }
+        .prose p { margin-bottom: 1rem; line-height: 1.6; }
+        .prose h1, .prose h2, .prose h3 { color: #2d2926; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; }
+        .prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .prose li { margin-bottom: 0.5rem; }
+        .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; background-color: white; }
+        .prose th, .prose td { border: 1px solid #e0e8e4; padding: 0.75rem; text-align: left; }
+        .prose th { background-color: #f9f7f1; }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d0dfd9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7a7d7c; }
+
+        .loader-dots div {
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        .loader-dots div:nth-child(1) { left: 8px; animation: loader-dots1 0.6s infinite; }
+        .loader-dots div:nth-child(2) { left: 8px; animation: loader-dots2 0.6s infinite; }
+        .loader-dots div:nth-child(3) { left: 32px; animation: loader-dots2 0.6s infinite; }
+        .loader-dots div:nth-child(4) { left: 56px; animation: loader-dots3 0.6s infinite; }
+        @keyframes loader-dots1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes loader-dots3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
+        @keyframes loader-dots2 { 0% { transform: translate(0, 0); } 100% { transform: translate(24px, 0); } }
+        
+        .sidebar { transition: transform 0.3s ease-in-out; }
+        @media (max-width: 768px) {
+            .sidebar-closed { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body class="flex h-screen w-full antialiased text-ink-dark selection:bg-user-bubble selection:text-ink-dark">
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar sidebar-closed fixed md:relative z-50 w-72 h-full bg-white border-r border-paper-line flex flex-col flex-shrink-0">
+        
+        <div class="p-6 flex flex-col gap-2">
+            <!-- Brand -->
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded bg-user-bubble flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-outlined text-ink-dark text-2xl font-bold">bolt</span>
+                </div>
+                <div>
+                    <h1 class="header-title text-lg font-bold leading-tight tracking-tight text-ink-dark">VoltIQ Assistant</h1>
+                    <p class="text-[11px] font-medium text-ink-light tracking-widest uppercase">Energy Intelligence</p>
+                </div>
+                <button class="md:hidden ml-auto text-ink-light hover:text-ink-dark" onclick="toggleSidebar()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <!-- New Chat Button -->
+            <button onclick="clearChat()" class="flex items-center gap-3 w-full p-3 bg-white border border-paper-line hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-[18px] text-ink-dark">add_circle</span>
+                New Chat
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-4 py-2">
+            <!-- Chat history goes here if implemented -->
+        </div>
+
+        <!-- System Status Footer -->
+        <div class="p-6 border-t border-paper-line flex flex-col gap-4">
+            <h3 class="text-xs font-bold text-ink-light uppercase tracking-wider">System Status</h3>
+            <div class="flex flex-col gap-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-ink-light flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">api</span> Backend
+                    </span>
+                    <div class="flex items-center gap-1.5 px-2 py-0.5 bg-white rounded border border-[#d0dfd9] shadow-sm">
+                        <span id="backend-dot" class="w-2 h-2 rounded-full bg-red-500"></span>
+                        <span id="backend-text" class="text-xs font-medium text-ink-light">Checking</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-ink-light flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">database</span> RAG Engine
+                    </span>
+                    <div class="flex items-center gap-1.5 px-2 py-0.5 bg-white rounded border border-[#d0dfd9] shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span class="text-xs font-medium text-ink-dark">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-full relative min-w-0">
+        
+        <!-- Mobile Header -->
+        <header class="md:hidden flex items-center justify-between p-4 border-b border-paper-line bg-paper/80 backdrop-blur-md sticky top-0 z-30">
+            <button onclick="toggleSidebar()" class="text-ink-light hover:text-ink-dark">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <div class="header-title font-bold text-md text-ink-dark">VoltIQ</div>
+            <div class="w-6"></div> <!-- spacer -->
+        </header>
+
+        <!-- Chat Stream Canvas -->
+        <div id="chat-container" class="flex-1 overflow-y-auto w-full px-4 sm:px-6 md:px-8 py-8 flex flex-col gap-6 pb-40">
+            
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="flex flex-col items-center justify-center my-auto w-full max-w-2xl mx-auto text-center fade-in">
+                <div class="w-16 h-16 rounded-xl bg-white border border-paper-line flex items-center justify-center shadow-sm mb-6">
+                    <span class="material-symbols-outlined text-user-bubble text-4xl font-bold">bolt</span>
+                </div>
+                <h2 class="header-title text-3xl font-bold text-ink-dark mb-4">VoltIQ Energy RAG</h2>
+                <p class="text-ink-light text-base mb-8 max-w-md">
+                    Ask questions about energy consumption, household analytics, weather impact, tariffs, holidays, and conservation.
+                </p>
+
+                <!-- Example Queries Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+                    <button onclick="sendExample('What is the average daily energy consumption across all households?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm">
+                        <p class="text-sm text-ink-dark font-medium">What is the average daily energy consumption across all households?</p>
+                    </button>
+                    <button onclick="sendExample('How does temperature affect daily energy consumption in London?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm">
+                        <p class="text-sm text-ink-dark font-medium">How does temperature affect daily energy consumption in London?</p>
+                    </button>
+                    <button onclick="sendExample('Which season has the highest average household energy consumption?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm">
+                        <p class="text-sm text-ink-dark font-medium">Which season has the highest average household energy consumption?</p>
+                    </button>
+                    <button onclick="sendExample('How many households use Standard and Time-of-Use tariffs?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm">
+                        <p class="text-sm text-ink-dark font-medium">How many households use Standard and Time-of-Use tariffs?</p>
+                    </button>
+                    <button onclick="sendExample('Is energy consumption higher on bank holidays compared with regular days?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm">
+                        <p class="text-sm text-ink-dark font-medium">Is energy consumption higher on bank holidays compared with regular days?</p>
+                    </button>
+                    <button onclick="sendExample('What energy conservation strategies are recommended?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm">
+                        <p class="text-sm text-ink-dark font-medium">What energy conservation strategies are recommended?</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat messages will be appended here -->
+        </div>
+
+        <!-- Input Area -->
+        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-paper via-paper to-transparent pt-12 pb-6 px-4 sm:px-6 md:px-8 pl-[80px]">
+            <div class="max-w-4xl mx-auto relative">
+                <form id="chat-form" class="relative flex items-end w-full bg-white border-2 border-ink-dark rounded-md shadow-[4px_4px_0px_#2d2926] focus-within:shadow-[2px_2px_0px_#2d2926] focus-within:translate-y-[2px] focus-within:translate-x-[2px] transition-all">
+                    <textarea 
+                        id="chat-input"
+                        rows="1"
+                        class="w-full max-h-48 py-4 pl-5 pr-14 bg-transparent text-ink-dark placeholder-ink-light border-none focus:ring-0 resize-none"
+                        placeholder="Type a message..."
+                        onkeydown="handleKeydown(event)"
+                        oninput="autoResize(this)"
+                    ></textarea>
+                    
+                    <button id="send-button" type="submit" class="absolute right-2 bottom-2 w-10 h-10 flex items-center justify-center rounded bg-ink-dark text-white hover:bg-ink-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="material-symbols-outlined font-variation-settings-fill-1 text-xl">send</span>
+                    </button>
+                </form>
+                <div class="text-center mt-3">
+                    <p class="text-[10px] tracking-widest uppercase text-ink-light font-bold">VoltIQ RAG Pipeline · Grounded in energy telemetry</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- JS Logic -->
+    <script>
+        // API Base URL discovery
+        let API_BASE = window.location.origin.startsWith('http') ? window.location.origin : 'http://127.0.0.1:8000';
+        let CHAT_URL = `${API_BASE}/chat`;
+        let STATUS_URL = `${API_BASE}/`;
+        
+        const chatContainer = document.getElementById('chat-container');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-button');
+        const backendDot = document.getElementById('backend-dot');
+        const backendText = document.getElementById('backend-text');
+
+        // Marked.js safe config
+        if (typeof marked !== 'undefined') {
+            marked.use({ breaks: true, gfm: true });
+        }
+        
+        function safeMarkdown(text) {
+            try {
+                if (typeof marked !== 'undefined' && marked.parse) {
+                    return marked.parse(text || "");
+                }
+            } catch (e) {
+                console.error("Markdown parse error:", e);
+            }
+            return `<p>${(text || "").replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</p>`;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            sidebar.classList.toggle('sidebar-closed');
+            backdrop.classList.toggle('hidden');
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+            if (textarea.value === '') {
+                textarea.style.height = 'auto';
+            }
+        }
+
+        function handleKeydown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitQuery();
+            }
+        }
+
+        function sendExample(query) {
+            chatInput.value = query;
+            autoResize(chatInput);
+            submitQuery(query);
+        }
+
+        function clearChat() {
+            const messages = document.querySelectorAll('.chat-message');
+            messages.forEach(msg => msg.remove());
+            welcomeScreen.style.display = 'flex';
+            chatInput.value = '';
+            autoResize(chatInput);
+            chatInput.focus();
+            if (window.innerWidth < 768) toggleSidebar();
+        }
+
+        function scrollToBottom() {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function appendUserMessage(text) {
+            welcomeScreen.style.display = 'none';
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-message flex w-full justify-end max-w-4xl mx-auto fade-in';
+            msgDiv.innerHTML = `
+                <div class="bg-user-bubble text-ink-dark px-5 py-3.5 rounded-xl rounded-tr-sm max-w-[85%] shadow-sm">
+                    <p class="text-[15px] whitespace-pre-wrap">${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+                </div>
+            `;
+            chatContainer.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function appendBotMessage(data) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-message flex w-full justify-start max-w-4xl mx-auto fade-in';
+            
+            let html = `
+                <div class="flex gap-4 w-full">
+                    <div class="bg-ai-bubble text-ink-dark rounded-xl rounded-tl-sm p-6 w-full max-w-[90%] shadow-sm">
+                        <div class="flex items-center gap-2 mb-4 text-[10px] tracking-[0.2em] text-ink-light font-bold uppercase">
+                            <span>S Y S T E M</span>
+                            <span>·</span>
+                            <span>T E L E M E T R Y</span>
+                        </div>
+            `;
+
+            if (data.success) {
+                const mdContent = safeMarkdown(data.answer || "");
+                html += `
+                        <div class="prose max-w-none text-ink-dark text-[15px] mb-6">
+                            ${mdContent}
+                        </div>
+                `;
+                
+                // Sources and metrics have been hidden per user request
+            } else {
+                html += `
+                        <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+                            <span class="font-bold flex items-center gap-2 mb-1"><span class="material-symbols-outlined text-[16px]">error</span> Error</span>
+                            ${data.error || "Failed to communicate with VoltIQ RAG. Ensure the backend is running at http://127.0.0.1:8000."}
+                        </div>
+                `;
+            }
+
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            msgDiv.innerHTML = html;
+            chatContainer.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function createLoadingBubble() {
+            welcomeScreen.style.display = 'none';
+            const msgDiv = document.createElement('div');
+            msgDiv.id = 'loading-bubble';
+            msgDiv.className = 'chat-message flex w-full justify-start max-w-4xl mx-auto fade-in';
+            msgDiv.innerHTML = `
+                <div class="flex gap-4 w-full">
+                    <div class="bg-ai-bubble text-ink-dark rounded-xl rounded-tl-sm p-6 max-w-[90%] shadow-sm">
+                        <div class="flex items-center gap-2 text-[10px] tracking-[0.2em] text-ink-light font-bold uppercase">
+                            <span>T H I N K I N G</span>
+                        </div>
+                        <div class="flex items-center text-sm gap-2 mt-4">
+                            <div class="relative w-20 h-3 inline-block loader-dots">
+                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
+                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
+                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
+                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(msgDiv);
+            scrollToBottom();
+            return msgDiv;
+        }
+
+        function setInputState(disabled) {
+            chatInput.disabled = disabled;
+            sendBtn.disabled = disabled;
+            if (disabled) {
+                chatInput.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                chatInput.classList.remove('opacity-50', 'cursor-not-allowed');
+                chatInput.focus();
+            }
+        }
+
+        async function submitQuery(queryText) {
+            const query = (queryText !== undefined ? queryText : chatInput.value).trim();
+            if (!query) return;
+
+            appendUserMessage(query);
+            chatInput.value = '';
+            autoResize(chatInput);
+            setInputState(true);
+            
+            const loadingBubble = createLoadingBubble();
+
+            try {
+                // Try configured CHAT_URL first, fallback to localhost if 127.0.0.1 fails
+                let res;
+                try {
+                    res = await fetch(CHAT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query: query })
+                    });
+                } catch (e) {
+                    if (CHAT_URL.includes('127.0.0.1')) {
+                        CHAT_URL = 'http://localhost:8000/chat';
+                        STATUS_URL = 'http://localhost:8000/';
+                        res = await fetch(CHAT_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ query: query })
+                        });
+                    } else {
+                        throw e;
+                    }
+                }
+                
+                if (!res.ok) {
+                    throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+                }
+                
+                const data = await res.json();
+                loadingBubble.remove();
+                appendBotMessage(data);
+                checkBackendStatus();
+            } catch (err) {
+                loadingBubble.remove();
+                appendBotMessage({ success: false, error: err.message || "Failed to reach backend server. Make sure `uvicorn api:app --port 8000` is running." });
+                backendDot.className = "w-2 h-2 rounded-full bg-red-500";
+                backendText.textContent = "Disconnected";
+                backendText.className = "text-xs font-medium text-ink-light";
+            } finally {
+                setInputState(false);
+            }
+        }
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            submitQuery();
+        });
+
+        // Status Pinger
+        async function checkBackendStatus() {
+            try {
+                let res;
+                try {
+                    res = await fetch(STATUS_URL);
+                } catch (err) {
+                    if (STATUS_URL.includes('127.0.0.1')) {
+                        STATUS_URL = 'http://localhost:8000/';
+                        CHAT_URL = 'http://localhost:8000/chat';
+                        res = await fetch(STATUS_URL);
+                    } else {
+                        throw err;
+                    }
+                }
+                if (res && res.ok) {
+                    backendDot.className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]";
+                    backendText.textContent = "Connected";
+                    backendText.className = "text-xs font-medium text-ink-dark font-semibold";
+                } else {
+                    throw new Error('Status not OK');
+                }
+            } catch (e) {
+                backendDot.className = "w-2 h-2 rounded-full bg-red-500";
+                backendText.textContent = "Disconnected";
+                backendText.className = "text-xs font-medium text-ink-light";
+            }
+        }
+
+        checkBackendStatus();
+        setInterval(checkBackendStatus, 4000);
+        chatInput.focus();
+    </script>
+</body>
+</html>

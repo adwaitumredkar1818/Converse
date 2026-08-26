@@ -1,0 +1,131 @@
+{
+  "acorn_grouped": {
+    "ACORN-": {
+      "avg_daily_energy_kwh": 12.003773363636364,
+      "median_daily_energy_kwh": 8.22,
+      "std_daily_energy_kwh": 7.716676402092429,
+      "total_records": 781
+    },
+    "ACORN-U": {
+      "avg_daily_energy_kwh": 11.622462424804946,
+      "median_daily_energy_kwh": 7.339000000000001,
+      "std_daily_energy_kwh": 13.18469026579228,
+      "total_records": 29607
+    },
+    "Adversity": {
+      "avg_daily_energy_kwh": 8.505913062438895,
+      "median_daily_energy_kwh": 7.035,
+      "std_daily_energy_kwh": 6.305283691855468,
+      "total_records": 1137392
+    },
+    "Affluent": {
+      "avg_daily_energy_kwh": 11.481609321429502,
+      "median_daily_energy_kwh": 8.232999999999999,
+      "std_daily_energy_kwh": 11.275113724356327,
+      "total_records": 1410434
+    },
+    "Comfortable": {
+      "avg_daily_energy_kwh": 10.007593041041535,
+      "median_daily_energy_kwh": 8.311000000000002,
+      "std_daily_energy_kwh": 7.858926761976851,
+      "total_records": 938788
+    }
+  },
+  "acorn_detailed": {
+    "ACORN-": {
+      "avg_daily_energy_kwh": 12.003773363636364,
+      "median_daily_energy_kwh": 8.22,
+      "total_records": 781
+    },
+    "ACORN-A": {
+      "avg_daily_energy_kwh": 19.07018910630998,
+      "median_daily_energy_kwh": 14.140999999999998,
+      "total_records": 93265
+    },
+    "ACORN-B": {
+      "avg_daily_energy_kwh": 11.909066997902437,
+      "median_daily_energy_kwh": 9.710000000000004,
+      "total_records": 14493
+    },
+    "ACORN-C": {
+      "avg_daily_energy_kwh": 11.954172500620217,
+      "median_daily_energy_kwh": 9.7285,
+      "total_records": 88840
+    },
+    "ACORN-D": {
+      "avg_daily_energy_kwh": 13.580322966873528,
+      "median_daily_energy_kwh": 10.473,
+      "total_records": 189338
+    },
+    "ACORN-E": {
+      "avg_daily_energy_kwh": 10.355894293403697,
+      "median_daily_energy_kwh": 7.3679999999999986,
+      "total_records": 1024498
+    },
+    "ACORN-F": {
+      "avg_daily_energy_kwh": 9.194115798763267,
+      "median_daily_energy_kwh": 7.554000000000001,
+      "total_records": 448035
+    },
+    "ACORN-G": {
+      "avg_daily_energy_kwh": 10.172337379583997,
+      "median_daily_energy_kwh": 8.445,
+      "total_records": 123893
+    },
+    "ACORN-H": {
+      "avg_daily_energy_kwh": 11.011199261761638,
+      "median_daily_energy_kwh": 9.638000000000002,
+      "total_records": 272360
+    },
+    "ACORN-I": {
+      "avg_daily_energy_kwh": 9.441839147097866,
+      "median_daily_energy_kwh": 7.846,
+      "total_records": 29530
+    },
+    "ACORN-J": {
+      "avg_daily_energy_kwh": 11.353139110334,
+      "median_daily_energy_kwh": 7.977000050000002,
+      "total_records": 64970
+    },
+    "ACORN-K": {
+      "avg_daily_energy_kwh": 10.01065330555415,
+      "median_daily_energy_kwh": 8.807999999999998,
+      "total_records": 106803
+    },
+    "ACORN-L": {
+      "avg_daily_energy_kwh": 10.031631262832171,
+      "median_daily_energy_kwh": 8.684000000000001,
+      "total_records": 204338
+    },
+    "ACORN-M": {
+      "avg_daily_energy_kwh": 9.990912860436978,
+      "median_daily_energy_kwh": 8.169000000000002,
+      "total_records": 66365
+    },
+    "ACORN-N": {
+      "avg_daily_energy_kwh": 9.220773666484005,
+      "median_daily_energy_kwh": 8.184000000000001,
+      "total_records": 92156
+    },
+    "ACORN-O": {
+      "avg_daily_energy_kwh": 8.530359798326026,
+      "median_daily_energy_kwh": 7.190000000000002,
+      "total_records": 61351
+    },
+    "ACORN-P": {
+      "avg_daily_energy_kwh": 6.614893010167898,
+      "median_daily_energy_kwh": 4.436,
+      "total_records": 72306
+    },
+    "ACORN-Q": {
+      "avg_daily_energy_kwh": 7.566581886678601,
+      "median_daily_energy_kwh": 6.1949999999999985,
+      "total_records": 534073
+    },
+    "ACORN-U": {
+      "avg_daily_energy_kwh": 11.622462424804946,
+      "median_daily_energy_kwh": 7.339000000000001,
+      "total_records": 29607
+    }
+  }
+}

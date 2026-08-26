@@ -1,0 +1,18 @@
+.env
+venv/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.streamlit/secrets.toml
+replacements.txt
+
+# Ignore large raw and analytical datasets
+data/raw/
+data/processed/tables/
+*.csv
+
+# Frontend build & dependencies
+node_modules/
+dist/
+*.save

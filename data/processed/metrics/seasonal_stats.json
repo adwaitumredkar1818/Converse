@@ -1,0 +1,30 @@
+{
+  "Autumn": {
+    "avg_daily_energy_kwh": 9.974053077188522,
+    "max_daily_energy_kwh": 332.5560009999998,
+    "avg_temp_max": 14.422786713193576,
+    "avg_temp_min": 8.446770677392717,
+    "record_count": 949237
+  },
+  "Spring": {
+    "avg_daily_energy_kwh": 10.206178342973692,
+    "max_daily_energy_kwh": 199.8180004,
+    "avg_temp_max": 12.492471571633248,
+    "avg_temp_min": 5.7962790500864845,
+    "record_count": 673533
+  },
+  "Summer": {
+    "avg_daily_energy_kwh": 8.16304587818129,
+    "max_daily_energy_kwh": 161.17699979999998,
+    "avg_temp_max": 21.580349143412136,
+    "avg_temp_min": 13.558173535946207,
+    "record_count": 898857
+  },
+  "Winter": {
+    "avg_daily_energy_kwh": 11.993218648009444,
+    "max_daily_energy_kwh": 321.6969984000001,
+    "avg_temp_max": 8.238528351890343,
+    "avg_temp_min": 3.5797716397713084,
+    "record_count": 995375
+  }
+}
