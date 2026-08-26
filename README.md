@@ -5,7 +5,6 @@ An AI-powered **Hybrid RAG (Retrieval-Augmented Generation)** system for answeri
 ## 📸 Interface
 
 ![VoltIQ Web Interface](assets/voltiq-ui.png)
-*(Note: Please save your screenshot as `assets/voltiq-ui.png` to display it here)*
 
 The system combines document retrieval, tabular analytics, vector search, query routing, and an LLM to provide data-driven answers through a custom, fast, and responsive web interface.
 
