@@ -2,7 +2,10 @@
 
 An AI-powered **Hybrid RAG (Retrieval-Augmented Generation)** system for answering energy-related questions using both **unstructured documents** and **structured energy datasets**.
 
-![VoltIQ UI Placeholder](https://via.placeholder.com/800x450.png?text=VoltIQ+Chat+Interface)
+## 📸 Interface
+
+![VoltIQ Web Interface](assets/voltiq-ui.png)
+*(Note: Please save your screenshot as `assets/voltiq-ui.png` to display it here)*
 
 The system combines document retrieval, tabular analytics, vector search, query routing, and an LLM to provide data-driven answers through a custom, fast, and responsive web interface.
 
@@ -16,6 +19,18 @@ The system combines document retrieval, tabular analytics, vector search, query 
 - **Hybrid LLM Backend**: Primary reasoning powered by Groq, with an automatic failover to OpenRouter.
 - **Persistent Vector Search**: Built-in ChromaDB for fast and reliable document retrieval.
 - **Energy Analytics**: Understands energy conservation, consumption analytics, weather impacts, and tariff comparisons.
+
+---
+
+## 📊 Data Sources & Capabilities
+
+VoltIQ is grounded in specific, real-world data and documents. It can instantly answer questions based on:
+
+1. **London Household Energy Data (Tabular)**: Analytics on average daily energy consumption across thousands of households, including the impacts of weather, seasons, and bank holidays.
+2. **Energy Tariffs**: Comparisons between Standard and Time-of-Use tariffs.
+3. **Conservation Documents (PDF/TXT)**: Unstructured knowledge base containing expert recommendations, tips, and strategies for industrial and residential energy conservation.
+
+Whenever you ask a question, the AI intelligently decides whether to run mathematical queries on the tabular data or perform a vector search across the documents to find your answer!
 
 ---
 
