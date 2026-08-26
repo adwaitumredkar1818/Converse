@@ -3,7 +3,7 @@ import sys
 import json
 import time
 import pickle
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 
 # Ensure project root is in sys.path
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,7 +12,7 @@ if PROJECT_ROOT not in sys.path:
 
 INPUT_CHUNKS_FILE = os.path.join(PROJECT_ROOT, "data", "processed", "documents", "chunks.json")
 OUTPUT_EMBEDDINGS_FILE = os.path.join(PROJECT_ROOT, "data", "processed", "documents", "embeddings.pkl")
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
 def generate_and_save_embeddings():
     print("=" * 60)
@@ -35,12 +35,12 @@ def generate_and_save_embeddings():
     # 2. Load Embedding Model
     print(f"\n🧠 Initializing Embedding Model: {MODEL_NAME}...")
     start_time = time.time()
-    model = SentenceTransformer(MODEL_NAME)
+    model = TextEmbedding(model_name=MODEL_NAME)
     
     # 3. Generate Embeddings
     texts = [c["page_content"] for c in chunks]
-    print(f"⚡ Generating 384-dimensional embeddings for {total_chunks} text chunks...")
-    embeddings = model.encode(texts, show_progress_bar=True, batch_size=32)
+    print(f"⚡ Generating embeddings for {total_chunks} text chunks...")
+    embeddings = list(model.embed(texts, batch_size=32))
 
     embedding_dims = embeddings.shape[1] if hasattr(embeddings, 'shape') else len(embeddings[0])
 

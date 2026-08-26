@@ -1,7 +1,7 @@
 import os
 import sys
 import chromadb
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 
 # Ensure project root is in sys.path
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,7 +10,7 @@ if PROJECT_ROOT not in sys.path:
 
 VECTOR_DB_DIR = os.path.join(PROJECT_ROOT, "vector_db")
 COLLECTION_NAME = "energy_documents"
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+MODEL_NAME = "BAAI/bge-small-en-v1.5"
 
 _cached_model = None
 _cached_collection = None
@@ -18,20 +18,20 @@ _cached_collection = None
 def get_resources():
     global _cached_model, _cached_collection
     if _cached_model is None or _cached_collection is None:
-        _cached_model = SentenceTransformer(MODEL_NAME)
+        _cached_model = TextEmbedding(model_name=MODEL_NAME)
         client = chromadb.PersistentClient(path=VECTOR_DB_DIR)
         _cached_collection = client.get_collection(name=COLLECTION_NAME)
     return _cached_model, _cached_collection
 
 def retrieve(query: str, top_k: int = 15):
     """
-    Accepts a user query, encodes it using SentenceTransformer, searches the persistent Chroma DB,
+    Accepts a user query, encodes it using FastEmbed, searches the persistent Chroma DB,
     and returns a list of top_k matched document chunks with similarity scores and metadata.
     """
     model, collection = get_resources()
 
     # 1. Embed user query
-    query_embedding = model.encode([query]).tolist()
+    query_embedding = [list(model.embed([query]))[0].tolist()]
 
     # 2. Query Chroma Vector DB
     results = collection.query(
