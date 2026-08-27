@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>VoltIQ Assistant - Profile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300..700,0..1&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        "paper": "#f9f7f1",
+                        "paper-line": "#e0e8e4",
+                        "ink-dark": "#2d2926",
+                        "ink-light": "#7a7d7c",
+                        "user-bubble": "#e8b0b0",
+                        "ai-bubble": "#f1e5d1",
+                        "primary": "#815500",
+                        "primary-container": "#f4b044"
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "system-ui", "sans-serif"],
+                        "display": ["Outfit", "system-ui", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f7f1;
+            background-image:
+                linear-gradient(90deg, transparent 78px, #e8b0b0 78px, #e8b0b0 80px, transparent 80px),
+                linear-gradient(transparent 27px, #e0e8e4 27px, #e0e8e4 28px, transparent 28px);
+            background-size: 100% 28px;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+        .header-title { font-family: 'Outfit', sans-serif; }
+
+        /* ============================================
+           CSS Variables — mirrors chat.html exactly
+           ============================================ */
+        :root {
+            --bg-page:        #f9f7f1;
+            --bg-card:        #ffffff;
+            --bg-header:      rgba(255,255,255,0.85);
+            --border-subtle:  #e0e8e4;
+            --border-medium:  #cdd8d3;
+            --text-primary:   #2d2926;
+            --text-secondary: #7a7d7c;
+            --accent-amber:   #f4b044;
+            --line-h:         #e0e8e4;
+            --line-v:         #e8b0b0;
+            --input-bg:       #ffffff;
+        }
+
+        html.dark {
+            --bg-page:        #1c1714;
+            --bg-card:        #261f1a;
+            --bg-header:      rgba(33,29,25,0.92);
+            --border-subtle:  #3a3028;
+            --border-medium:  #4a3d33;
+            --text-primary:   #ede8e2;
+            --text-secondary: #9a9086;
+            --accent-amber:   #f4b044;
+            --line-h:         #2e2720;
+            --line-v:         #3d2a2a;
+            --input-bg:       #211d19;
+        }
+
+        html.dark body {
+            background-color: var(--bg-page);
+            background-image:
+                linear-gradient(90deg, transparent 78px, var(--line-v) 78px, var(--line-v) 80px, transparent 80px),
+                linear-gradient(transparent 27px, var(--line-h) 27px, var(--line-h) 28px, transparent 28px);
+            color: var(--text-primary);
+        }
+
+        /* Card */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-header) !important;
+            border-color: var(--border-subtle) !important;
+            transition: background-color 0.25s ease;
+        }
+
+        /* Text */
+        .text-ink-dark { color: var(--text-primary) !important; }
+        .text-ink-light { color: var(--text-secondary) !important; }
+        .border-paper-line { border-color: var(--border-subtle) !important; }
+
+        /* Inputs */
+        input:not([disabled]) {
+            background-color: var(--input-bg);
+            border-color: var(--border-subtle);
+            color: var(--text-primary);
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+        input:disabled {
+            background-color: color-mix(in srgb, var(--input-bg) 80%, transparent);
+            color: var(--text-secondary);
+        }
+
+        /* Amber profile button */
+        html.dark .bg-amber-50  { background-color: #2a1e00 !important; }
+        html.dark .border-amber-200 { border-color: #5a3d00 !important; }
+        html.dark .text-amber-800 { color: #f4b044 !important; }
+        html.dark .hover\\:bg-amber-100:hover { background-color: #3a2800 !important; }
+
+        /* Dark card code/mono areas */
+        html.dark .bg-gray-50 { background-color: #1c1714 !important; }
+        html.dark .bg-gray-100 { background-color: #211d19 !important; }
+        html.dark .border-gray-200 { border-color: var(--border-subtle) !important; }
+        html.dark .border-gray-300 { border-color: var(--border-subtle) !important; }
+        html.dark .text-gray-600 { color: var(--text-secondary) !important; }
+        html.dark .text-gray-500 { color: var(--text-secondary) !important; }
+        html.dark .text-gray-400 { color: var(--text-muted, #6e6055) !important; }
+        html.dark code { background-color: #1a1512; color: var(--accent-amber); }
+
+        /* Scrollbar */
+        html.dark ::-webkit-scrollbar-thumb { background: #4a3d33; }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: #7a6a5a; }
+
+        /* Toggle switch bg */
+        html.dark .bg-gray-200 { background-color: #3a3028 !important; }
+        html.dark .dark\\:bg-gray-700 { background-color: #4a3d33 !important; }
+
+        /* Sign out button */
+        html.dark .text-red-600 { color: #f87171 !important; }
+        html.dark .hover\\:text-red-700:hover { color: #fca5a5 !important; }
+
+        /* UI Polish */
+        .btn-interactive {
+            transition: transform 0.15s ease, background-color 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+        }
+        .btn-interactive:active { transform: scale(0.97); }
+    </style>
+
+</head>
+<body class="antialiased text-ink-dark transition-colors duration-200">
+    
+    <!-- Header -->
+    <header class="flex items-center justify-between p-4 border-b border-paper-line bg-white/80 dark:bg-ink-dark/80 backdrop-blur-md sticky top-0 z-30 shadow-sm">
+        <div class="flex items-center gap-3">
+            <button onclick="window.location.href='/chat_ui'" class="text-ink-light hover:text-ink-dark dark:hover:text-white transition-colors">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div class="header-title font-bold text-xl text-ink-dark dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container">account_circle</span>
+                My Profile
+            </div>
+        </div>
+        <button id="signout-btn" class="flex items-center gap-2 text-sm font-semibold text-red-600 hover:text-red-700 transition-colors btn-interactive">
+            <span class="material-symbols-outlined text-[18px]">logout</span>
+            Sign Out
+        </button>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-4 sm:p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Left Column: User Details & Stats -->
+        <div class="md:col-span-2 space-y-6">
+            
+            <!-- User Details Card -->
+            <div class="card space-y-4">
+                <h2 class="header-title text-lg font-bold flex items-center gap-2 border-b border-paper-line dark:border-gray-700 pb-2">
+                    <span class="material-symbols-outlined">badge</span>
+                    Operator Details
+                </h2>
+                
+                <form id="profile-form" class="space-y-4">
+                    <div id="profile-msg" class="hidden text-sm font-semibold py-2 px-3 rounded"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-ink-light uppercase tracking-wider mb-1">Email (Read Only)</label>
+                            <input type="email" id="email" disabled class="w-full rounded border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-500 shadow-sm px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-ink-light uppercase tracking-wider mb-1">Full Name</label>
+                            <input type="text" id="name" class="w-full rounded border-gray-300 dark:border-gray-600 shadow-sm px-3 py-2 text-sm focus:ring-primary-container focus:border-primary-container">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-ink-light uppercase tracking-wider mb-1">Role</label>
+                            <input type="text" id="role" class="w-full rounded border-gray-300 dark:border-gray-600 shadow-sm px-3 py-2 text-sm focus:ring-primary-container focus:border-primary-container">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-ink-light uppercase tracking-wider mb-1">Department</label>
+                            <input type="text" id="department" class="w-full rounded border-gray-300 dark:border-gray-600 shadow-sm px-3 py-2 text-sm focus:ring-primary-container focus:border-primary-container">
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="bg-primary text-white px-4 py-2 rounded shadow text-sm font-semibold hover:bg-primary-container hover:text-ink-dark transition-colors btn-interactive">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security & API Keys -->
+            <div class="card space-y-4">
+                <h2 class="header-title text-lg font-bold flex items-center gap-2 border-b border-paper-line dark:border-gray-700 pb-2">
+                    <span class="material-symbols-outlined">vpn_key</span>
+                    API Access
+                </h2>
+                <p class="text-sm text-ink-light dark:text-gray-400">Generate API keys to interact with the VoltIQ RAG programmatically.</p>
+                
+                <div class="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
+                    <div class="flex-1">
+                        <p class="text-xs font-bold text-ink-light uppercase tracking-wider">Active Keys</p>
+                        <div id="api-keys-list" class="mt-2 space-y-2">
+                            <!-- Keys will be injected here -->
+                            <p class="text-sm italic text-gray-500">No active keys.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="generate-key-btn" class="flex items-center gap-2 text-sm font-bold text-primary-container hover:text-primary transition-colors btn-interactive">
+                    <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                    Generate New Key
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Stats & Preferences -->
+        <div class="space-y-6">
+            
+            <!-- Activity Stats -->
+            <div class="card space-y-4">
+                <h2 class="header-title text-lg font-bold flex items-center gap-2 border-b border-paper-line dark:border-gray-700 pb-2">
+                    <span class="material-symbols-outlined">query_stats</span>
+                    Telemetry Stats
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-ink-light dark:text-gray-400">Total Queries</span>
+                        <span id="stat-queries" class="text-xl font-bold font-display text-primary-container">0</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-ink-light dark:text-gray-400">Last Active</span>
+                        <span id="stat-last-active" class="text-sm font-bold text-ink-dark dark:text-white">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences -->
+            <div class="card space-y-4">
+                <h2 class="header-title text-lg font-bold flex items-center gap-2 border-b border-paper-line dark:border-gray-700 pb-2">
+                    <span class="material-symbols-outlined">settings</span>
+                    System Preferences
+                </h2>
+                
+                <div class="flex items-center justify-between py-2">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-ink-light text-[18px]">dark_mode</span>
+                        <span class="text-sm font-medium">Dark Mode</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="theme-toggle" class="sr-only peer">
+                        <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary-container"></div>
+                    </label>
+                </div>
+
+                <div class="border-t border-paper-line dark:border-gray-700 pt-4">
+                    <button id="export-btn" class="w-full flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-ink-dark dark:text-white py-2 px-4 rounded text-sm font-semibold transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">download</span>
+                        Export Data
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Check Auth
+        const session = localStorage.getItem('supabase_session');
+        if (!session) {
+            window.location.href = '/';
+        }
+
+        const sessionObj = JSON.parse(session);
+        const token = sessionObj.access_token;
+        const userEmail = sessionObj.user.email;
+        document.getElementById('email').value = userEmail;
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeToggle.checked = true;
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeToggle.checked = false;
+            }
+        };
+
+        // Fetch Profile
+        async function loadProfile() {
+            try {
+                const res = await fetch('/api/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                
+                if (data.profile) {
+                    document.getElementById('name').value = data.profile.name || '';
+                    document.getElementById('role').value = data.profile.role || '';
+                    document.getElementById('department').value = data.profile.department || '';
+                    
+                    document.getElementById('stat-queries').textContent = data.profile.total_queries || 0;
+                    document.getElementById('stat-last-active').textContent = data.profile.last_active_time ? new Date(data.profile.last_active_time).toLocaleString() : '--';
+                    
+                    applyTheme(data.profile.theme || 'light');
+
+                    const keysList = document.getElementById('api-keys-list');
+                    const keys = data.profile.api_keys || [];
+                    if (keys.length > 0) {
+                        keysList.innerHTML = keys.map(k => `
+                            <div class="flex items-center justify-between bg-white dark:bg-gray-900 px-3 py-1.5 rounded border border-gray-200 dark:border-gray-700">
+                                <code class="text-xs font-mono text-gray-600 dark:text-gray-300">${k.substring(0,8)}...${k.substring(k.length-4)}</code>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to load profile", err);
+            }
+        }
+
+        loadProfile();
+
+        // Save Profile
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('profile-msg');
+            msg.className = 'text-sm font-semibold py-2 px-3 rounded text-blue-800 bg-blue-100 block';
+            msg.textContent = 'Saving...';
+
+            const payload = {
+                name: document.getElementById('name').value,
+                role: document.getElementById('role').value,
+                department: document.getElementById('department').value,
+                theme: themeToggle.checked ? 'dark' : 'light'
+            };
+
+            try {
+                const res = await fetch('/api/profile', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    msg.className = 'text-sm font-semibold py-2 px-3 rounded text-green-800 bg-green-100 block';
+                    msg.textContent = 'Profile updated successfully!';
+                    setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+                } else {
+                    throw new Error("Failed to save");
+                }
+            } catch (err) {
+                msg.className = 'text-sm font-semibold py-2 px-3 rounded text-red-800 bg-red-100 block';
+                msg.textContent = 'Error saving profile.';
+            }
+        });
+
+        // Generate Key
+        document.getElementById('generate-key-btn').addEventListener('click', async () => {
+            if(!confirm("Generate a new API key? This cannot be undone.")) return;
+            try {
+                const res = await fetch('/api/profile/apikey', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    loadProfile();
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        // Theme Toggle Listener
+        themeToggle.addEventListener('change', (e) => {
+            applyTheme(e.target.checked ? 'dark' : 'light');
+            // Trigger save profile to persist theme
+            document.getElementById('profile-form').dispatchEvent(new Event('submit'));
+        });
+
+        // Export Data
+        document.getElementById('export-btn').addEventListener('click', async () => {
+            try {
+                const res = await fetch('/api/profile/export', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `voltiq_profile_${userEmail}.json`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error("Export failed", err);
+            }
+        });
+
+        // Sign Out
+        document.getElementById('signout-btn').addEventListener('click', () => {
+            localStorage.removeItem('supabase_session');
+            window.location.href = '/';
+        });
+
+    </script>
+</body>
+</html>

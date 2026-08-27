@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>VoltIQ Assistant - Login</title>
+<title>VoltIQ Assistant - Create Account</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -61,6 +61,9 @@
     html.dark .text-ink-light { color: var(--text-secondary) !important; }
     html.dark .input-field { background-color: #211d19; border-color: var(--border); color: var(--text-primary); }
     html.dark .input-field::placeholder { color: var(--text-secondary); }
+    html.dark .card-shadow { box-shadow: 6px 6px 0 #5a4a3a; }
+    html.dark #page-theme-btn { background-color: #261f1a; border-color: #3a3028; color: #ede8e2; }
+    html.dark .bg-gray-200 { background-color: #3a3028 !important; }
     .header-title { font-family: 'Outfit', sans-serif; }
     .card-shadow { box-shadow: 6px 6px 0 #2d2926; }
     .input-field {
@@ -69,6 +72,7 @@
         background-color: white; transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .input-field:focus { border-color: var(--accent-amber); box-shadow: 0 0 0 4px rgba(244,176,68,0.15); }
+    .strength-bar div { height: 4px; border-radius: 2px; flex: 1; transition: background-color 0.3s; }
     
     /* Interactive Elements */
     .btn-interactive {
@@ -76,23 +80,21 @@
     }
     .btn-interactive:active { transform: scale(0.97); }
     .card-shadow { box-shadow: 6px 6px 0 #2d2926; transition: box-shadow 0.3s ease, transform 0.3s ease; }
+    @keyframes fadeSlideIn {
         from { opacity: 0; transform: translateY(16px); }
         to   { opacity: 1; transform: translateY(0); }
     }
-    html.dark .card-shadow { box-shadow: 6px 6px 0 #5a4a3a; }
-    html.dark #page-theme-btn { background-color: #261f1a !important; border-color: #3a3028 !important; color: #ede8e2 !important; }
     .fade-in { animation: fadeSlideIn 0.4s ease both; }
 </style>
+
+<!-- Floating theme toggle -->
+<button id="page-theme-btn" onclick="togglePageTheme()"
+    style="position:fixed;top:1rem;right:1rem;z-index:50;"
+    class="flex items-center justify-center w-9 h-9 rounded-lg border border-paper-line bg-white shadow-sm hover:bg-gray-50 transition-colors text-ink-light btn-interactive">
+    <span id="page-theme-icon" class="material-symbols-outlined text-[18px]">dark_mode</span>
+</button>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-
-    <!-- Floating theme toggle -->
-    <button id="page-theme-btn" onclick="togglePageTheme()"
-        style="position:fixed;top:1rem;right:1rem;z-index:50;"
-        class="flex items-center justify-center w-9 h-9 rounded-lg border border-paper-line bg-white shadow-sm hover:bg-gray-50 transition-colors text-ink-light btn-interactive">
-        <span id="page-theme-icon" class="material-symbols-outlined text-[18px]">dark_mode</span>
-    </button>
-
 
     <div class="w-full max-w-md fade-in">
 
@@ -109,13 +111,21 @@
 
         <!-- Card -->
         <div class="bg-white border-2 border-ink-dark rounded-2xl p-8 card-shadow">
-            <h2 class="header-title text-2xl font-bold text-ink-dark mb-1">Welcome Back</h2>
-            <p class="text-sm text-ink-light mb-6">Sign in to access your VoltIQ dashboard.</p>
+            <h2 class="header-title text-2xl font-bold text-ink-dark mb-1">Create Account</h2>
+            <p class="text-sm text-ink-light mb-6">Join VoltIQ and start querying your energy data.</p>
 
             <!-- Alert Message -->
             <div id="alert-msg" class="hidden text-sm font-semibold py-2.5 px-4 rounded-lg mb-5 flex items-center gap-2"></div>
 
-            <form id="login-form" class="space-y-4" novalidate>
+            <form id="signup-form" class="space-y-4" novalidate>
+                <!-- Name -->
+                <div>
+                    <label class="block text-xs font-bold text-ink-light uppercase tracking-wider mb-1.5" for="full-name">Full Name</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-ink-light text-[18px]">person</span>
+                        <input class="input-field pl-10" id="full-name" placeholder="John Doe" type="text" autocomplete="name"/>
+                    </div>
+                </div>
 
                 <!-- Email -->
                 <div>
@@ -131,24 +141,44 @@
                     <label class="block text-xs font-bold text-ink-light uppercase tracking-wider mb-1.5" for="password">Password</label>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-ink-light text-[18px]">lock</span>
-                        <input class="input-field pl-10 pr-10" id="password" placeholder="••••••••" type="password" autocomplete="current-password"/>
-                        <button type="button" onclick="togglePwd()" class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-light hover:text-ink-dark transition-colors">
+                        <input class="input-field pl-10 pr-10" id="password" placeholder="Min. 8 characters" type="password" autocomplete="new-password" oninput="checkStrength(this.value)"/>
+                        <button type="button" onclick="togglePwd('password', 'toggle-pwd-icon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-light hover:text-ink-dark transition-colors">
                             <span id="toggle-pwd-icon" class="material-symbols-outlined text-[18px]">visibility</span>
+                        </button>
+                    </div>
+                    <!-- Strength Bar -->
+                    <div class="strength-bar flex gap-1 mt-2" id="strength-bar">
+                        <div id="s1" class="bg-gray-200"></div>
+                        <div id="s2" class="bg-gray-200"></div>
+                        <div id="s3" class="bg-gray-200"></div>
+                        <div id="s4" class="bg-gray-200"></div>
+                    </div>
+                    <p id="strength-label" class="text-xs text-ink-light mt-1 h-4"></p>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label class="block text-xs font-bold text-ink-light uppercase tracking-wider mb-1.5" for="confirm-password">Confirm Password</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-ink-light text-[18px]">lock_reset</span>
+                        <input class="input-field pl-10 pr-10" id="confirm-password" placeholder="Re-enter password" type="password" autocomplete="new-password"/>
+                        <button type="button" onclick="togglePwd('confirm-password', 'toggle-cpwd-icon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-ink-light hover:text-ink-dark transition-colors">
+                            <span id="toggle-cpwd-icon" class="material-symbols-outlined text-[18px]">visibility</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Submit -->
-                <button id="submit-btn" type="submit" class="w-full bg-ink-dark text-white font-bold py-3 px-4 rounded-lg hover:bg-ink-light flex items-center justify-center gap-2 mt-2 btn-interactive">
-                    <span class="material-symbols-outlined text-[18px]">login</span> Sign In
+                <button type="submit" id="submit-btn" class="w-full bg-ink-dark text-white font-bold py-3 px-4 rounded-lg hover:bg-ink-light flex items-center justify-center gap-2 mt-2 btn-interactive">
+                    <span class="material-symbols-outlined text-[18px]">person_add</span> Create Account
                 </button>
             </form>
         </div>
 
-        <!-- Create Account link -->
+        <!-- Login Link -->
         <p class="text-center text-sm font-medium text-ink-light mt-6">
-            Don't have an account? 
-            <a href="/register" class="text-ink-dark underline decoration-2 decoration-user-bubble hover:text-ink-light transition-colors ml-1 btn-interactive inline-block">Create one</a>
+            Already have an account? 
+            <a href="/" class="text-ink-dark underline decoration-2 decoration-user-bubble hover:text-ink-light transition-colors ml-1 btn-interactive inline-block">Sign in</a>
         </p>
     </div>
 
@@ -158,23 +188,23 @@
             window.location.href = '/chat_ui';
         }
 
-        // Theme toggle (no profile API on login page)
+        // Theme toggle
         const savedTheme = localStorage.getItem('voltiq_theme') || 'light';
         if (savedTheme === 'dark') document.documentElement.classList.add('dark');
-        // Sync icon immediately
-        (function() {
-            const icon = document.getElementById('page-theme-icon');
-            if (icon) icon.textContent = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode';
-        })();
         function togglePageTheme() {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('voltiq_theme', isDark ? 'dark' : 'light');
             document.getElementById('page-theme-icon').textContent = isDark ? 'light_mode' : 'dark_mode';
         }
+        // Sync icon on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const icon = document.getElementById('page-theme-icon');
+            if (icon) icon.textContent = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+        });
 
-        function togglePwd() {
-            const input = document.getElementById('password');
-            const icon = document.getElementById('toggle-pwd-icon');
+        function togglePwd(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.textContent = 'visibility_off';
@@ -182,6 +212,29 @@
                 input.type = 'password';
                 icon.textContent = 'visibility';
             }
+        }
+
+        function checkStrength(pwd) {
+            const bars = ['s1','s2','s3','s4'];
+            const label = document.getElementById('strength-label');
+            bars.forEach(id => document.getElementById(id).style.backgroundColor = '#e5e7eb');
+
+            let score = 0;
+            if (pwd.length >= 8) score++;
+            if (/[A-Z]/.test(pwd)) score++;
+            if (/[0-9]/.test(pwd)) score++;
+            if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e'];
+            const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+
+            if (pwd.length === 0) { label.textContent = ''; return; }
+
+            for (let i = 0; i < score; i++) {
+                document.getElementById(bars[i]).style.backgroundColor = colors[score - 1];
+            }
+            label.textContent = labels[score - 1] || '';
+            label.style.color = colors[score - 1] || '#7a7d7c';
         }
 
         function showAlert(msg, type) {
@@ -197,42 +250,43 @@
             el.classList.remove('hidden');
         }
 
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const name = document.getElementById('full-name').value.trim();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm-password').value;
             const btn = document.getElementById('submit-btn');
 
+            // Validations
+            if (!name) return showAlert('Please enter your full name.', 'error');
             if (!email || !email.includes('@')) return showAlert('Please enter a valid email address.', 'error');
-            if (!password) return showAlert('Please enter your password.', 'error');
+            if (password.length < 8) return showAlert('Password must be at least 8 characters.', 'error');
+            if (password !== confirm) return showAlert('Passwords do not match.', 'error');
 
             btn.disabled = true;
-            btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span> Signing in...';
+            btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span> Creating account...';
 
             try {
-                const res = await fetch('/api/login', {
+                const res = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ name, email, password })
                 });
                 const data = await res.json();
 
                 if (data.success) {
-                    showAlert('Auth granted. Redirecting...', 'success');
-                    localStorage.setItem('user_email', email);
-                    if (data.session) {
-                        localStorage.setItem('supabase_session', JSON.stringify(data.session));
-                    }
-                    setTimeout(() => { window.location.href = '/chat_ui'; }, 500);
+                    showAlert('Account created! Redirecting to login...', 'success');
+                    setTimeout(() => window.location.href = '/', 1500);
                 } else {
-                    showAlert(data.message || 'Invalid email or password.', 'error');
+                    showAlert(data.message || 'Registration failed. Try a different email.', 'error');
                     btn.disabled = false;
-                    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">login</span> Sign In';
+                    btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">person_add</span> Create Account';
                 }
             } catch (err) {
                 showAlert('Could not connect to server. Is the backend running?', 'error');
                 btn.disabled = false;
-                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">login</span> Sign In';
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">person_add</span> Create Account';
             }
         });
     </script>

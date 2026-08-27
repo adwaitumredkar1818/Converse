@@ -16,3 +16,6 @@ data/processed/tables/
 node_modules/
 dist/
 *.save
+
+# Stitch downloads
+stitch_downloads/

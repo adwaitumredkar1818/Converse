@@ -130,3 +130,5 @@ fastapi==0.141.1
 duckdb==1.5.5
 fastembed==0.8.0
 openai
+supabase==2.11.0
+python-dotenv==1.0.10
