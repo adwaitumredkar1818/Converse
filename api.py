@@ -39,7 +39,12 @@ async def add_pna_and_cors_headers(request, call_next):
 # Supabase Client
 url: str = os.environ.get("SUPABASE_URL", "")
 key: str = os.environ.get("SUPABASE_KEY", "")
-sb: Client = create_client(url, key)
+
+try:
+    sb: Client = create_client(url, key)
+except Exception as e:
+    print("WARNING: Failed to initialize Supabase client. Are SUPABASE_URL and SUPABASE_KEY set?")
+    sb = None
 
 # --- Dependencies ---
 def get_user_from_token(authorization: Optional[str] = Header(None)):
