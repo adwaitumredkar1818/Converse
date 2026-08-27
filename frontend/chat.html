@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>VoltIQ Energy Intelligence RAG</title>
+    <title>Converse AI Energy Intelligence RAG</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries,typography"></script>
     <!-- Fonts & Icons -->
@@ -100,14 +100,14 @@
         /* CSS variables for clean switching */
         :root {
             --bg-page:       #f9f7f1;
-            --bg-sidebar:    #ffffff;
+            --bg-sidebar:    rgba(255, 255, 255, 0.7);
             --bg-card:       #ffffff;
             --bg-ai-bubble:  #f1e5d1;
             --bg-user-bubble:#e8b0b0;
             --bg-input:      #ffffff;
-            --bg-header:     rgba(249,247,241,0.85);
-            --border-subtle: #e0e8e4;
-            --border-medium: #cdd8d3;
+            --bg-header:     rgba(249,247,241,0.7);
+            --border-subtle: rgba(224, 232, 228, 0.6);
+            --border-medium: rgba(205, 216, 211, 0.8);
             --text-primary:  #2d2926;
             --text-secondary:#7a7d7c;
             --text-muted:    #9aadaa;
@@ -115,20 +115,23 @@
             --accent-rose:   #e8b0b0;
             --line-h:        #e0e8e4;
             --line-v:        #e8b0b0;
-            --code-bg:       #ffffff;
-            --scrollbar:     #cdd8d3;
+            --code-bg:       #f5f5f5;
+            --scrollbar-track: rgba(0, 0, 0, 0.02);
+            --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+            --bubble-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            --bubble-border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         html.dark {
             --bg-page:       #1c1714;
-            --bg-sidebar:    #211d19;
+            --bg-sidebar:    rgba(33, 29, 25, 0.75);
             --bg-card:       #261f1a;
             --bg-ai-bubble:  #2e2520;
             --bg-user-bubble:#3d2424;
             --bg-input:      #211d19;
-            --bg-header:     rgba(28,23,20,0.90);
-            --border-subtle: #3a3028;
-            --border-medium: #4a3d33;
+            --bg-header:     rgba(28,23,20,0.75);
+            --border-subtle: rgba(58, 48, 40, 0.6);
+            --border-medium: rgba(74, 61, 51, 0.8);
             --text-primary:  #ede8e2;
             --text-secondary:#9a9086;
             --text-muted:    #6e6055;
@@ -137,7 +140,10 @@
             --line-h:        #2e2720;
             --line-v:        #3d2a2a;
             --code-bg:       #1a1512;
-            --scrollbar:     #4a3d33;
+            --scrollbar-track: rgba(255, 255, 255, 0.02);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+            --bubble-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            --bubble-border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         body {
@@ -155,9 +161,11 @@
             background-color: var(--bg-sidebar) !important;
             border-color: var(--border-subtle) !important;
             transition: background-color 0.25s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
         .sidebar-footer {
-            background-color: var(--bg-sidebar) !important;
+            background-color: transparent !important;
             border-color: var(--border-subtle) !important;
         }
 
@@ -165,6 +173,8 @@
         header {
             background-color: var(--bg-header) !important;
             border-color: var(--border-subtle) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         /* Cards / white surfaces */
@@ -224,9 +234,25 @@
         html.dark .prose th { background-color: var(--bg-ai-bubble); }
         html.dark .prose th, html.dark .prose td { border-color: var(--border-subtle); }
 
-        /* Scrollbar — warm sepia */
-        html.dark ::-webkit-scrollbar-thumb { background: var(--scrollbar); }
-        html.dark ::-webkit-scrollbar-thumb:hover { background: #7a6a5a; }
+        /* Custom Sleek Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(122, 125, 124, 0.4);
+        }
+        
+        #chat-container::-webkit-scrollbar-track {
+            margin: 10px 0;
+        }
 
         /* Welcome screen cards */
         html.dark .rounded-xl.bg-white,
@@ -283,12 +309,46 @@
         /* === Fix input area gradient fog === */
         #input-area-wrapper {
             background: linear-gradient(
-                to top,
-                var(--bg-page) 60%,
-                transparent 100%
+                to bottom,
+                transparent,
+                var(--bg-page) 1.5rem
             );
-            transition: background 0.25s ease;
         }
+        
+        /* === Premium Chat Bubbles === */
+        .premium-bubble {
+            box-shadow: var(--bubble-shadow);
+            border: var(--bubble-border);
+            backdrop-filter: blur(5px);
+        }
+
+        /* === Animations === */
+        @keyframes slideUpSpring {
+            0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+            60% { opacity: 1; transform: translateY(-3px) scale(1); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .fade-in {
+            animation: slideUpSpring 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes skeletonPulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 0.2; }
+            100% { opacity: 0.6; }
+        }
+        
+        .skeleton-block {
+            animation: skeletonPulse 1.5s ease-in-out infinite;
+            background: currentColor;
+            border-radius: 4px;
+        }
+        
+        .stagger-1 { animation-delay: 0.05s; }
+        .stagger-2 { animation-delay: 0.1s; }
+        .stagger-3 { animation-delay: 0.15s; }
+        .stagger-4 { animation-delay: 0.2s; }
 
     </style>
 </head>
@@ -307,7 +367,7 @@
                     <span class="material-symbols-outlined text-ink-dark text-xl font-bold">bolt</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h1 class="header-title text-base font-bold leading-tight tracking-tight text-ink-dark truncate">VoltIQ Assistant</h1>
+                    <h1 class="header-title text-base font-bold leading-tight tracking-tight text-ink-dark truncate">Converse AI Assistant</h1>
                     <p class="text-[10px] font-medium text-ink-light tracking-widest uppercase">Energy Intelligence</p>
                 </div>
                 <!-- Close/Collapse button (all screens) -->
@@ -323,8 +383,8 @@
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-4 py-2">
-            <!-- Chat history goes here if implemented -->
+        <div class="flex-1 overflow-y-auto px-4 py-2 space-y-1" id="chat-history-list">
+            <!-- Chat history goes here -->
         </div>
 
         <!-- Sidebar Footer: System Status -->
@@ -351,7 +411,7 @@
             <button id="sidebar-open-btn" onclick="toggleSidebar()" class="text-ink-light hover:text-ink-dark transition-colors hidden">
                 <span class="material-symbols-outlined">menu</span>
             </button>
-            <div id="header-title-spacer" class="header-title font-bold text-md text-ink-dark">VoltIQ Assistant</div>
+            <div id="header-title-spacer" class="header-title font-bold text-md text-ink-dark">Converse AI Assistant</div>
             <div class="flex items-center gap-2">
                 <!-- Theme Toggle -->
                 <button id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle dark mode"
@@ -392,29 +452,29 @@
                 <div class="w-16 h-16 rounded-xl bg-white border border-paper-line flex items-center justify-center shadow-sm mb-6">
                     <span class="material-symbols-outlined text-user-bubble text-4xl font-bold">bolt</span>
                 </div>
-                <h2 class="header-title text-3xl font-bold text-ink-dark mb-4">VoltIQ Energy RAG</h2>
+                <h2 class="header-title text-3xl font-bold text-ink-dark mb-4">Converse AI Energy RAG</h2>
                 <p class="text-ink-light text-base mb-8 max-w-md">
                     Ask questions about energy consumption, household analytics, weather impact, tariffs, holidays, and conservation.
                 </p>
 
                 <!-- Example Queries Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-                    <button onclick="sendExample('What is the average daily energy consumption across all households?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card">
+                    <button onclick="sendExample('What is the average daily energy consumption across all households?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card fade-in stagger-1">
                         <p class="text-sm text-ink-dark font-medium">What is the average daily energy consumption across all households?</p>
                     </button>
-                    <button onclick="sendExample('How does temperature affect daily energy consumption in London?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card">
+                    <button onclick="sendExample('How does temperature affect daily energy consumption in London?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card fade-in stagger-1">
                         <p class="text-sm text-ink-dark font-medium">How does temperature affect daily energy consumption in London?</p>
                     </button>
-                    <button onclick="sendExample('Which season has the highest average household energy consumption?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card">
+                    <button onclick="sendExample('Which season has the highest average household energy consumption?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card fade-in stagger-2">
                         <p class="text-sm text-ink-dark font-medium">Which season has the highest average household energy consumption?</p>
                     </button>
-                    <button onclick="sendExample('How many households use Standard and Time-of-Use tariffs?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card">
+                    <button onclick="sendExample('How many households use Standard and Time-of-Use tariffs?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card fade-in stagger-2">
                         <p class="text-sm text-ink-dark font-medium">How many households use Standard and Time-of-Use tariffs?</p>
                     </button>
-                    <button onclick="sendExample('Is energy consumption higher on bank holidays compared with regular days?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card">
+                    <button onclick="sendExample('Is energy consumption higher on bank holidays compared with regular days?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card fade-in stagger-3">
                         <p class="text-sm text-ink-dark font-medium">Is energy consumption higher on bank holidays compared with regular days?</p>
                     </button>
-                    <button onclick="sendExample('What energy conservation strategies are recommended?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card">
+                    <button onclick="sendExample('What energy conservation strategies are recommended?')" class="text-left p-4 rounded-xl bg-white border border-paper-line hover:border-ink-dark transition-colors group shadow-sm query-card fade-in stagger-3">
                         <p class="text-sm text-ink-dark font-medium">What energy conservation strategies are recommended?</p>
                     </button>
                 </div>
@@ -441,7 +501,7 @@
                     </button>
                 </form>
                 <div class="text-center mt-3">
-                    <p class="text-[10px] tracking-widest uppercase text-ink-light font-bold">VoltIQ RAG Pipeline · Grounded in energy telemetry</p>
+                    <p class="text-[10px] tracking-widest uppercase text-ink-light font-bold">Converse AI RAG Pipeline · Grounded in energy telemetry</p>
                 </div>
             </div>
         </div>
@@ -618,6 +678,7 @@
         }
 
         function clearChat() {
+            currentSessionId = null;
             const messages = document.querySelectorAll('.chat-message');
             messages.forEach(msg => msg.remove());
             welcomeScreen.style.display = 'flex';
@@ -625,6 +686,12 @@
             autoResize(chatInput);
             chatInput.focus();
             if (window.innerWidth < 768) toggleSidebar();
+            
+            // Remove active state from sidebar items
+            document.querySelectorAll('.chat-history-item').forEach(el => {
+                el.classList.remove('bg-amber-50', 'border-amber-200');
+                el.classList.add('border-transparent');
+            });
         }
 
         function scrollToBottom() {
@@ -636,7 +703,7 @@
             const msgDiv = document.createElement('div');
             msgDiv.className = 'chat-message flex w-full justify-end max-w-4xl mx-auto fade-in';
             msgDiv.innerHTML = `
-                <div class="bg-user-bubble text-ink-dark px-5 py-3.5 rounded-xl rounded-tr-sm max-w-[85%] shadow-sm">
+                <div class="bg-user-bubble premium-bubble text-ink-dark px-5 py-3.5 rounded-xl rounded-tr-sm max-w-[85%]">
                     <p class="text-[15px] whitespace-pre-wrap">${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
                 </div>
             `;
@@ -650,7 +717,7 @@
             
             let html = `
                 <div class="flex gap-4 w-full">
-                    <div class="bg-ai-bubble text-ink-dark rounded-xl rounded-tl-sm p-6 w-full max-w-[90%] shadow-sm">
+                    <div class="bg-ai-bubble premium-bubble text-ink-dark rounded-xl rounded-tl-sm p-6 w-full max-w-[90%]">
                         <div class="flex items-center gap-2 mb-4 text-[10px] tracking-[0.2em] text-ink-light font-bold uppercase">
                             <span>S Y S T E M</span>
                             <span>·</span>
@@ -671,7 +738,7 @@
                 html += `
                         <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
                             <span class="font-bold flex items-center gap-2 mb-1"><span class="material-symbols-outlined text-[16px]">error</span> Error</span>
-                            ${data.error || "Failed to communicate with VoltIQ RAG. Ensure the backend is running at http://127.0.0.1:8000."}
+                            ${data.error || "Failed to communicate with Converse AI RAG. Ensure the backend is running at http://127.0.0.1:8000."}
                         </div>
                 `;
             }
@@ -693,17 +760,14 @@
             msgDiv.className = 'chat-message flex w-full justify-start max-w-4xl mx-auto fade-in';
             msgDiv.innerHTML = `
                 <div class="flex gap-4 w-full">
-                    <div class="bg-ai-bubble text-ink-dark rounded-xl rounded-tl-sm p-6 max-w-[90%] shadow-sm">
-                        <div class="flex items-center gap-2 text-[10px] tracking-[0.2em] text-ink-light font-bold uppercase">
+                    <div class="bg-ai-bubble premium-bubble text-ink-dark rounded-xl rounded-tl-sm p-6 max-w-[90%] min-w-[300px]">
+                        <div class="flex items-center gap-2 text-[10px] tracking-[0.2em] text-ink-light font-bold uppercase mb-4">
                             <span>T H I N K I N G</span>
                         </div>
-                        <div class="flex items-center text-sm gap-2 mt-4">
-                            <div class="relative w-20 h-3 inline-block loader-dots">
-                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
-                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
-                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
-                                <div class="absolute top-0 w-2 h-2 rounded-full bg-ink-dark"></div>
-                            </div>
+                        <div class="space-y-3 w-full">
+                            <div class="h-4 skeleton-block w-full"></div>
+                            <div class="h-4 skeleton-block w-5/6"></div>
+                            <div class="h-4 skeleton-block w-4/6"></div>
                         </div>
                     </div>
                 </div>
@@ -745,7 +809,7 @@
                             'Content-Type': 'application/json',
                             'Authorization': sessionToken ? `Bearer ${sessionToken}` : ''
                         },
-                        body: JSON.stringify({ query: query })
+                        body: JSON.stringify({ query: query, session_id: currentSessionId })
                     });
                 } catch (e) {
                     if (CHAT_URL.includes('127.0.0.1')) {
@@ -757,7 +821,7 @@
                                 'Content-Type': 'application/json',
                                 'Authorization': sessionToken ? `Bearer ${sessionToken}` : ''
                             },
-                            body: JSON.stringify({ query: query })
+                            body: JSON.stringify({ query: query, session_id: currentSessionId })
                         });
                     } else {
                         throw e;
@@ -770,6 +834,12 @@
                 
                 const data = await res.json();
                 loadingBubble.remove();
+                
+                if (data.session_id && currentSessionId !== data.session_id) {
+                    currentSessionId = data.session_id;
+                    loadChatSessions(); // Refresh sidebar to show new chat
+                }
+                
                 appendBotMessage(data);
                 checkBackendStatus();
             } catch (err) {
@@ -820,6 +890,133 @@
         checkBackendStatus();
         setInterval(checkBackendStatus, 4000);
         chatInput.focus();
+
+        // ── Chat History ──────────────────────────────────────
+        let currentSessionId = null;
+        
+        async function loadChatSessions() {
+            if (!sessionToken) return;
+            try {
+                const res = await fetch('/api/chats', {
+                    headers: { 'Authorization': `Bearer ${sessionToken}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    const list = document.getElementById('chat-history-list');
+                    list.innerHTML = '';
+                    
+                    const groups = {
+                        "Today": [],
+                        "Yesterday": [],
+                        "Previous 7 Days": [],
+                        "Older": []
+                    };
+                    
+                    const now = new Date();
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+                    const lastWeek = new Date(today); lastWeek.setDate(lastWeek.getDate() - 7);
+                    
+                    data.sessions.forEach(s => {
+                        const d = new Date(s.created_at);
+                        if (d >= today) groups["Today"].push(s);
+                        else if (d >= yesterday) groups["Yesterday"].push(s);
+                        else if (d >= lastWeek) groups["Previous 7 Days"].push(s);
+                        else groups["Older"].push(s);
+                    });
+                    
+                    for (const [label, sessions] of Object.entries(groups)) {
+                        if (sessions.length > 0) {
+                            const header = document.createElement('div');
+                            header.className = 'text-[10px] font-bold text-ink-light uppercase tracking-wider mt-4 mb-2 px-2';
+                            header.textContent = label;
+                            list.appendChild(header);
+                            
+                            sessions.forEach(s => {
+                                const container = document.createElement('div');
+                                container.className = `chat-history-item group relative flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm transition-colors border ${currentSessionId === s.id ? 'bg-amber-50 border-amber-200 text-amber-900 font-medium shadow-sm' : 'border-transparent text-ink-dark hover:bg-gray-50'}`;
+                                
+                                const titleBtn = document.createElement('button');
+                                titleBtn.className = 'truncate flex-1 text-left';
+                                titleBtn.textContent = s.title;
+                                titleBtn.onclick = () => loadChat(s.id);
+                                
+                                const delBtn = document.createElement('button');
+                                delBtn.className = 'opacity-0 group-hover:opacity-100 transition-opacity ml-2 text-ink-light hover:text-red-500 flex-shrink-0 focus:opacity-100';
+                                delBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] block">delete</span>';
+                                delBtn.onclick = (e) => deleteChat(s.id, e);
+                                
+                                container.appendChild(titleBtn);
+                                container.appendChild(delBtn);
+                                list.appendChild(container);
+                            });
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to load sessions", e);
+            }
+        }
+
+        async function loadChat(sessionId) {
+            if (!sessionToken) return;
+            try {
+                const res = await fetch(`/api/chats/${sessionId}`, {
+                    headers: { 'Authorization': `Bearer ${sessionToken}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentSessionId = sessionId;
+                    const messages = document.querySelectorAll('.chat-message');
+                    messages.forEach(msg => msg.remove());
+                    welcomeScreen.style.display = 'none';
+                    
+                    data.messages.forEach(m => {
+                        if (m.role === 'user') {
+                            appendUserMessage(m.content);
+                        } else {
+                            appendBotMessage({ success: true, answer: m.content });
+                        }
+                    });
+                    
+                    if (window.innerWidth < 768) toggleSidebar();
+                    
+                    // Update active state in sidebar
+                    document.querySelectorAll('.chat-history-item').forEach(el => {
+                        el.classList.remove('bg-amber-50', 'border-amber-200', 'text-amber-900', 'font-medium');
+                        el.classList.add('border-transparent', 'text-ink-dark');
+                    });
+                    loadChatSessions(); // lazy re-render to update classes
+                }
+            } catch (e) {
+                console.error("Failed to load chat", e);
+            }
+        }
+
+        async function deleteChat(sessionId, e) {
+            e.stopPropagation();
+            
+            try {
+                const res = await fetch(`/api/chats/${sessionId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${sessionToken}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    if (currentSessionId === sessionId) {
+                        clearChat();
+                    }
+                    loadChatSessions();
+                } else {
+                    console.error("Failed to delete chat", data.error);
+                    alert("Error deleting chat: " + data.error);
+                }
+            } catch (err) {
+                console.error("Failed to delete chat", err);
+            }
+        }
+
+        loadChatSessions();
     </script>
 </body>
 </html>

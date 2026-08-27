@@ -60,6 +60,7 @@ def require_user(user = Depends(get_user_from_token)):
 # --- Models ---
 class ChatRequest(BaseModel):
     query: str
+    session_id: Optional[str] = None
 
 class LoginRequest(BaseModel):
     email: str
@@ -150,10 +151,41 @@ def register(request: RegisterRequest):
 @app.post("/chat")
 def chat(request: ChatRequest, user = Depends(get_user_from_token)):
     try:
+        session_id = request.session_id
+        
+        # If user is logged in, handle history tracking
+        if user:
+            # Create session if needed
+            if not session_id:
+                # Generate a short title from the query
+                title = request.query[:40] + ("..." if len(request.query) > 40 else "")
+                session_res = sb.table("chat_sessions").insert({
+                    "user_id": user.id,
+                    "title": title
+                }).execute()
+                session_id = session_res.data[0]["id"]
+            
+            # Save User Message
+            sb.table("chat_messages").insert({
+                "session_id": session_id,
+                "user_id": user.id,
+                "role": "user",
+                "content": request.query
+            }).execute()
+
+        # Generate RAG response
         result = answer(request.query)
 
-        # Update stats if user is logged in
-        if user:
+        if user and session_id:
+            # Save Assistant Message
+            sb.table("chat_messages").insert({
+                "session_id": session_id,
+                "user_id": user.id,
+                "role": "assistant",
+                "content": result["answer"]
+            }).execute()
+
+            # Update user stats
             profile_res = sb.table("profiles").select("total_queries").eq("id", user.id).execute()
             if profile_res.data:
                 current = profile_res.data[0].get("total_queries", 0)
@@ -161,6 +193,7 @@ def chat(request: ChatRequest, user = Depends(get_user_from_token)):
 
         return {
             "success": True,
+            "session_id": session_id,
             "query": result["query"],
             "answer": result["answer"],
             "category": result["category"],
@@ -169,6 +202,41 @@ def chat(request: ChatRequest, user = Depends(get_user_from_token)):
             "latencies_ms": result["latencies_ms"],
             "sources": result["sources"]
         }
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+@app.get("/api/chats")
+def get_chats(user = Depends(require_user)):
+    try:
+        # Fetch sessions ordered by newest first
+        res = sb.table("chat_sessions").select("id, title, created_at").eq("user_id", user.id).order("created_at", desc=True).execute()
+        return {"success": True, "sessions": res.data}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+@app.get("/api/chats/{session_id}")
+def get_chat_messages(session_id: str, user = Depends(require_user)):
+    try:
+        # Ensure the session belongs to the user
+        session_res = sb.table("chat_sessions").select("id").eq("id", session_id).eq("user_id", user.id).execute()
+        if not session_res.data:
+            return {"success": False, "error": "Session not found or access denied."}
+            
+        res = sb.table("chat_messages").select("role, content, created_at").eq("session_id", session_id).order("created_at").execute()
+        return {"success": True, "messages": res.data}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+@app.delete("/api/chats/{session_id}")
+def delete_chat_session(session_id: str, user = Depends(require_user)):
+    try:
+        # Ensure the session belongs to the user before deleting
+        session_res = sb.table("chat_sessions").select("id").eq("id", session_id).eq("user_id", user.id).execute()
+        if not session_res.data:
+            return {"success": False, "error": "Session not found or access denied."}
+            
+        sb.table("chat_sessions").delete().eq("id", session_id).execute()
+        return {"success": True}
     except Exception as e:
         return {"success": False, "error": str(e)}
 
