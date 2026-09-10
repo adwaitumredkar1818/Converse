@@ -1,9 +1,11 @@
 import os
 import sys
 import chromadb
-from fastembed import TextEmbedding
 
-# Ensure project root is in sys.path
+# Vercel Serverless environment restricts write access to /tmp
+os.environ["FASTEMBED_CACHE_PATH"] = "/tmp/fastembed"
+
+from fastembed import TextEmbedding
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
@@ -19,7 +21,19 @@ def get_resources():
     global _cached_model, _cached_collection
     if _cached_model is None or _cached_collection is None:
         _cached_model = TextEmbedding(model_name=MODEL_NAME)
-        client = chromadb.PersistentClient(path=VECTOR_DB_DIR)
+        
+        # On Vercel, the filesystem is read-only except for /tmp.
+        # ChromaDB SQLite needs write access even for reading, so we copy it to /tmp.
+        db_path = VECTOR_DB_DIR
+        if os.environ.get("VERCEL") == "1":
+            import shutil
+            tmp_db_path = "/tmp/vector_db"
+            if not os.path.exists(tmp_db_path):
+                print(f"Copying vector_db to {tmp_db_path} for Vercel compatibility...")
+                shutil.copytree(VECTOR_DB_DIR, tmp_db_path)
+            db_path = tmp_db_path
+            
+        client = chromadb.PersistentClient(path=db_path)
         _cached_collection = client.get_collection(name=COLLECTION_NAME)
     return _cached_model, _cached_collection
 
