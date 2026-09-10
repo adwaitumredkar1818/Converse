@@ -95,10 +95,8 @@ def get_tabular_context(query: str) -> dict:
                 ROUND(AVG(temperatureMax), 2) as avg_max_temp_c
             FROM '{ANALYTICAL_CSV}'
         """
-        res = conn.execute(sql).fetchone()
-        columns = [desc[0] for desc in conn.description]
-        res_dict = dict(zip(columns, res))
-        context_str = f"DuckDB Ad-hoc Summary: {res_dict}"
+        res_df = conn.execute(sql).df()
+        context_str = f"DuckDB Ad-hoc Summary: {res_df.to_dict(orient='records')[0]}"
         conn.close()
 
         return {
